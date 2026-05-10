@@ -1,0 +1,6 @@
+.notes-panel {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid white;
+    margin: 0 auto;
+}

@@ -1,0 +1,8 @@
+.home-page-layout {
+    display: flex;
+}
+
+.home-page-content {
+    flex: 1;
+    padding: 2rem;
+}
