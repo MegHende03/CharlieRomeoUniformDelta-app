@@ -1,9 +1,12 @@
 * {
     margin: 0;
-    border: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    background-color:rgba(32, 25, 25);
+    font-family: google sans, sans-serif;
     color: white;
 }
+

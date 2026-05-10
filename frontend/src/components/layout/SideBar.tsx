@@ -1,4 +1,4 @@
-import '../../styles/SideBar.css';
+import "./SideBar.css";
 import { useState } from 'react';
 import Modal from 'react-modal';
 
