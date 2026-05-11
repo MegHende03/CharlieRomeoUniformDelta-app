@@ -5,43 +5,35 @@ import Modal from 'react-modal';
 function SideBar() {
 
     const [notebook, setNotebook] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState<string>('');
-    const [openModal, setOpenModal] = useState(false);
+    const [notebookInputValue, setNotebookInputValue] = useState<string>('');
+    const [isAddNotebookOpen, setIsAddNotebookOpen] = useState(false);
+    const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    const handleNotebookInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNotebookInputValue(e.target.value);
   };
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleNotebookSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      // 3. Create a NEW array with the existing items plus the new one
-      setNotebook(prevItems => [...prevItems, inputValue]);
-      setInputValue(''); // Reset input field
-      setOpenModal(false);
+    if (notebookInputValue.trim()) {
+      setNotebook(prevItems => [...prevItems, notebookInputValue]);
+      setNotebookInputValue(''); // Reset input field
+      setIsAddNotebookOpen(false);
     }
   };
 
-    function setIsOpen() {
-        setOpenModal(true);
-    }
-
-    function setCloseModal() {
-        setOpenModal(false);
-    }
-    
+    const setAddNotebookClosed = () => {setIsAddNotebookOpen(false);};
+    const setAddNotebookOpen = () => {setIsAddNotebookOpen(true);};
+    const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
+    const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
 
     return (
         <>
             <aside className="side-bar">
                 <h2>Side Bar Header!</h2>
-                <button className="new-note-btn"><span className="plus">+</span>
+                <button className="new-note-btn" onClick={setAddNoteOpen}><span className="plus">+</span>
                  New note</button>
-                <div className="notebook">
-                    <label>NOTEBOOKS</label>
-                    <button className="plus-btn" onClick={setIsOpen}> + </button>
-                </div>
 
-                <Modal isOpen={openModal}
+                 <Modal isOpen={isAddNoteOpen}
                     style={{
                         overlay: {
                             position: 'fixed',
@@ -49,7 +41,47 @@ function SideBar() {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            backgroundColor: 'rgba(223, 145, 164, 0.75)'
+                            backgroundColor: 'rgba(46, 45, 45, 0.75)'
+                        },
+                        content: {
+                            position: 'absolute',
+                            top: '100px',
+                            left: '500px',
+                            right: '500px',
+                            bottom: '100px',
+                            border: '1px solid #070303',
+                            background: '#1b1919',
+                            overflow: 'auto',
+                            borderRadius: '20px',
+                            outline: 'none',
+                            padding: '20px',
+                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
+                        }
+                    }}
+                >
+                    <label>
+                        Write a note:
+                    <textarea className="add-note" placeholder="Enter a note..." />
+                    </label>
+
+                    <button onClick={setAddNoteClosed}>Close</button>
+                </Modal>
+
+
+                <div className="notebook">
+                    <label>NOTEBOOKS</label>
+                    <button className="plus-btn" onClick={setAddNotebookOpen}> + </button>
+                </div>
+
+                <Modal isOpen={isAddNotebookOpen}
+                    style={{
+                        overlay: {
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'rgba(49, 49, 49, 0.75)'
                         },
                         content: {
                             position: 'absolute',
@@ -64,21 +96,19 @@ function SideBar() {
                             outline: 'none',
                             padding: '20px',
                             boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-
-
                         }
                     }}
                 >
                     <h2>Enter input:</h2>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleNotebookSubmit}>
                         <input
                             type="text"
-                            value={inputValue}
-                            onChange={handleInputChange}
+                            value={notebookInputValue}
+                            onChange={handleNotebookInputChange}
                             placeholder="Add a Notebook..."
                         />
                         <button type="submit">Add to list</button>
-                        <button className="close-modal" onClick={setCloseModal}> X </button>
+                        <button className="close-modal" onClick={setAddNotebookClosed}> X </button>
                     
                     </form>
                 </Modal>

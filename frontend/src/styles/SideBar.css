@@ -50,3 +50,9 @@ h2 {
     padding: 0px;
     text-align: left;
 }
+
+.add-note {
+    background-color: pink;
+    width: 50px;
+    resize: none;
+}
