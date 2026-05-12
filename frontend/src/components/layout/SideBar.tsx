@@ -10,9 +10,12 @@ function SideBar() {
     const [notebook, setNotebook] = useState<string[]>([]);
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
     const [isAddNotebookOpen, setIsAddNotebookOpen] = useState(false);
-    const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
     const [notebookActive, setNotebookActive] = useState<string>('');
-    const [editNotebook, setEditNotebook] = useState(false);
+    const [editNotebookModal, setEditNotebookModal] = useState(false);
+
+    const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+    const [titleInputValue, setTitleInputValue] = useState<string>('');
+    const [noteInputValue, setNoteInputValue] = useState<string>('');
 
     const handleNotebookInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNotebookInputValue(e.target.value);
@@ -31,9 +34,8 @@ function SideBar() {
     const setAddNotebookOpen = () => {setIsAddNotebookOpen(true);};
     const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
     const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
-    const setEditNotebookOpen = () => {setEditNotebook(true);};
-    const setEditNotebookClosed= () => {setEditNotebook(false);};
-
+    const setEditNotebookOpen = () => {setEditNotebookModal(true);};
+    const setEditNotebookClosed= () => {setEditNotebookModal(false);};
 
     return (
         <>
@@ -73,9 +75,25 @@ function SideBar() {
                         }
                     }}
                 >
+
+                     <label>
+                        Title:
+                        <input 
+                            type="text"
+                            placeholder="Enter a title..."
+                            value={titleInputValue}
+                            onChange={(e) => setTitleInputValue(e.target.value)}
+                         />
+                    </label>
+
                     <label>
                         Write a note:
-                    <textarea className="add-note" placeholder="Enter a note..." />
+                        <textarea 
+                            className="add-note" 
+                            placeholder="Enter a note..."
+                            value={noteInputValue}
+                            onChange={(e) => setNoteInputValue(e.target.value)}
+                        />
                     </label>
 
                     <button onClick={setAddNoteClosed}>Close</button>
@@ -143,7 +161,7 @@ function SideBar() {
                     ))}
                 </ul>
 
-                <Modal isOpen={editNotebook}
+                <Modal isOpen={editNotebookModal}
                     style={{
                         overlay: {
                             position: 'fixed',
@@ -169,8 +187,18 @@ function SideBar() {
                         }
                     }}
                 >
-                    <p>TEST</p>
+                    <p>New Name</p>
+                    
+                    <input 
+                        type="text"
+                        value={notebookInputValue}
+                        onChange={handleNotebookInputChange}
+                        placeholder="New Name..."
+                        maxLength={20}
+                    />
+
                     <button onClick={setEditNotebookClosed}>Close</button>
+
                 </Modal>    
 
             </aside>
