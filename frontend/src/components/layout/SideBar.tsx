@@ -1,6 +1,9 @@
 import "./SideBar.css";
 import { useState } from 'react';
 import Modal from 'react-modal';
+import logo from '../../assets/noteLogo.svg';
+import edit from '../../assets/editLogo.svg';
+import erase from '../../assets/deleteLogo.svg';
 
 function SideBar() {
 
@@ -8,6 +11,8 @@ function SideBar() {
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
     const [isAddNotebookOpen, setIsAddNotebookOpen] = useState(false);
     const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+    const [notebookActive, setNotebookActive] = useState<string>('');
+    const [editNotebook, setEditNotebook] = useState(false);
 
     const handleNotebookInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNotebookInputValue(e.target.value);
@@ -21,15 +26,24 @@ function SideBar() {
     }
   };
 
+
     const setAddNotebookClosed = () => {setIsAddNotebookOpen(false);};
     const setAddNotebookOpen = () => {setIsAddNotebookOpen(true);};
     const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
     const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
+    const setEditNotebookOpen = () => {setEditNotebook(true);};
+    const setEditNotebookClosed= () => {setEditNotebook(false);};
+
 
     return (
         <>
             <aside className="side-bar">
-                <h2>Side Bar Header!</h2>
+                
+                <div className = "logo-title">
+                    <img className="logo-img" src={logo} alt="Logo" />
+                    <h1>notekeeper</h1>
+                </div>
+
                 <button className="new-note-btn" onClick={setAddNoteOpen}><span className="plus">+</span>
                  New note</button>
 
@@ -69,7 +83,7 @@ function SideBar() {
 
 
                 <div className="notebook">
-                    <label>NOTEBOOKS</label>
+                    <label><h2>NOTEBOOKS</h2></label>
                     <button className="plus-btn" onClick={setAddNotebookOpen}> + </button>
                 </div>
 
@@ -106,6 +120,7 @@ function SideBar() {
                             value={notebookInputValue}
                             onChange={handleNotebookInputChange}
                             placeholder="Add a Notebook..."
+                            maxLength={20}
                         />
                         <button type="submit">Add to list</button>
                         <button className="close-modal" onClick={setAddNotebookClosed}> X </button>
@@ -115,9 +130,48 @@ function SideBar() {
 
                 <ul className="notebook-list">
                     {notebook.map((item, index) => (
-                        <li key={index}>{item}</li>
+                        <>
+                            <li key={index} className="notebook-item">
+                                <button 
+                                    className={notebookActive === item ? "notebook-btn-active" : "notebook-btn"} 
+                                    onClick={() => setNotebookActive(item)}>{item}
+                                </button>
+                                    <button className="edit-btn" onClick={setEditNotebookOpen}><img src={edit} alt="edit button" /></button>
+                                    <button className="delete-btn"><img src={erase} alt="edit button" /></button>
+                            </li>
+                        </>    
                     ))}
                 </ul>
+
+                <Modal isOpen={editNotebook}
+                    style={{
+                        overlay: {
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'rgba(49, 49, 49, 0.75)'
+                        },
+                        content: {
+                            position: 'absolute',
+                            top: '300px',
+                            left: '600px',
+                            right: '600px',
+                            bottom: '300px',
+                            border: '1px solid #070303',
+                            background: '#423232',
+                            overflow: 'auto',
+                            borderRadius: '20px',
+                            outline: 'none',
+                            padding: '20px',
+                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
+                        }
+                    }}
+                >
+                    <p>TEST</p>
+                    <button onClick={setEditNotebookClosed}>Close</button>
+                </Modal>    
 
             </aside>
             
