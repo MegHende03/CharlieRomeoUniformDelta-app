@@ -4,38 +4,37 @@ import Modal from 'react-modal';
 import logo from '../../assets/noteLogo.svg';
 import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
+import checkmark from '../../assets/checkmark.svg';
 
 function SideBar() {
 
-    const [notebook, setNotebook] = useState<string[]>([]);
+    type Notebook = {
+        id: number;
+        name: string;
+    };
+
+    const [notebook, setNotebook] = useState<Notebook[]>([]);
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
-    const [isAddNotebookOpen, setIsAddNotebookOpen] = useState(false);
-    const [notebookActive, setNotebookActive] = useState<string>('');
-    const [editNotebookModal, setEditNotebookModal] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
 
     const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
     const [titleInputValue, setTitleInputValue] = useState<string>('');
     const [noteInputValue, setNoteInputValue] = useState<string>('');
+    
 
-    const handleNotebookInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNotebookInputValue(e.target.value);
-  };
-    const handleNotebookSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
-    if (notebookInputValue.trim()) {
-      setNotebook(prevItems => [...prevItems, notebookInputValue]);
-      setNotebookInputValue(''); // Reset input field
-      setIsAddNotebookOpen(false);
-    }
-  };
-
-
-    const setAddNotebookClosed = () => {setIsAddNotebookOpen(false);};
-    const setAddNotebookOpen = () => {setIsAddNotebookOpen(true);};
     const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
     const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
-    const setEditNotebookOpen = () => {setEditNotebookModal(true);};
-    const setEditNotebookClosed= () => {setEditNotebookModal(false);};
+
+    const addNotebook = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if(!notebookInputValue.trim()) return;
+        const newNotebook = {id: Date.now(), name: notebookInputValue};
+        setNotebook((prev) => [newNotebook, ...prev]);
+        setNotebookInputValue("");
+        setIsEditing(false);
+    };
+
 
     return (
         <>
@@ -102,104 +101,38 @@ function SideBar() {
 
                 <div className="notebook">
                     <label><h2>NOTEBOOKS</h2></label>
-                    <button className="plus-btn" onClick={setAddNotebookOpen}> + </button>
+                    <button className="plus-btn" onClick={() => setIsEditing(true)}> + </button>
                 </div>
 
-                <Modal isOpen={isAddNotebookOpen}
-                    style={{
-                        overlay: {
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(49, 49, 49, 0.75)'
-                        },
-                        content: {
-                            position: 'absolute',
-                            top: '300px',
-                            left: '600px',
-                            right: '600px',
-                            bottom: '300px',
-                            border: '1px solid #070303',
-                            background: '#423232',
-                            overflow: 'auto',
-                            borderRadius: '20px',
-                            outline: 'none',
-                            padding: '20px',
-                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-                        }
-                    }}
-                >
-                    <h2>Enter input:</h2>
-                    <form onSubmit={handleNotebookSubmit}>
-                        <input
-                            type="text"
-                            value={notebookInputValue}
-                            onChange={handleNotebookInputChange}
-                            placeholder="Add a Notebook..."
-                            maxLength={20}
-                        />
-                        <button type="submit">Add to list</button>
-                        <button className="close-modal" onClick={setAddNotebookClosed}> X </button>
-                    
-                    </form>
-                </Modal>
-
                 <ul className="notebook-list">
-                    {notebook.map((item, index) => (
-                        <>
-                            <li key={index} className="notebook-item">
-                                <button 
-                                    className={notebookActive === item ? "notebook-btn-active" : "notebook-btn"} 
-                                    onClick={() => setNotebookActive(item)}>{item}
-                                </button>
-                                    <button className="edit-btn" onClick={setEditNotebookOpen}><img src={edit} alt="edit button" /></button>
-                                    <button className="delete-btn"><img src={erase} alt="edit button" /></button>
-                            </li>
-                        </>    
-                    ))}
-                </ul>
 
-                <Modal isOpen={editNotebookModal}
-                    style={{
-                        overlay: {
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(49, 49, 49, 0.75)'
-                        },
-                        content: {
-                            position: 'absolute',
-                            top: '300px',
-                            left: '600px',
-                            right: '600px',
-                            bottom: '300px',
-                            border: '1px solid #070303',
-                            background: '#423232',
-                            overflow: 'auto',
-                            borderRadius: '20px',
-                            outline: 'none',
-                            padding: '20px',
-                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-                        }
-                    }}
-                >
-                    <p>New Name</p>
+                    {isEditing && 
+                    <div className="add-notebook">
+                        <input 
+                            maxLength={15}
+                            className="add-notebook-input"
+                            type="text"
+                            placeholder="New Notebook..."
+                            value={notebookInputValue}
+                            onChange={(e) => setNotebookInputValue(e.target.value)} />
+                        <button type="submit" onClick={addNotebook} className="checkmark"><img src={checkmark} alt="checkmark" /></button>
+                    </div>
+                }
                     
-                    <input 
-                        type="text"
-                        value={notebookInputValue}
-                        onChange={handleNotebookInputChange}
-                        placeholder="New Name..."
-                        maxLength={20}
-                    />
+                    {notebook.map((notebook) => (
+                        <div key={notebook.id}>
+                            <li 
+                                onClick={() => setSelectedListItem(notebook.id)}
+                                className={selectedListItem === notebook.id ? "notebook-item-active" : "notebook-item"}>
+                                    {notebook.name}
+                                <button className="edit-btn"><img src={edit} alt="edit button" /></button>
+                                <button className="delete-btn"><img src={erase} alt="edit button" /></button>
+                            </li>
+                        </div>    
+                    ))}
 
-                    <button onClick={setEditNotebookClosed}>Close</button>
-
-                </Modal>    
+                </ul>
+ 
 
             </aside>
             

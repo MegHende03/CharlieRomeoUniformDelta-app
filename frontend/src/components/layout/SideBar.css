@@ -2,6 +2,10 @@
     color: beige;
 }
 
+input {
+    color: black;
+}
+
 .side-bar {
     background-color: #130e0e;
     width: 300px;
@@ -23,7 +27,8 @@
     text-align: center;
     cursor: pointer;
     align-content: center;
-    font-size: 12px;
+    font-size: 15px;
+    font-family: google sans, sans-serif;
 
     &:hover {
         transform: scale(1.1);
@@ -32,31 +37,33 @@
 
 .plus {
     margin-right: 10px;
-    font-size: 20px;
+    font-size: 18px;
     font-family: google sans, sans-serif;
 }
 
 .notebook {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 10px;
+    padding-bottom: 2px;
     padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     font-size: 9px;
+    align-items: center;
     
     border-bottom: 1px solid rgb(92, 64, 50, 0.5);
     
 }
-
 .plus-btn {
     border: none;
     cursor: pointer;
     background: none;
-    font-size: 17px;
+    font-size: 20px;
     font-family: google sans, sans-serif;
+    display: flex;
 
     &:hover {
         transform: scale(1.5);
@@ -71,8 +78,11 @@
 .notebook-list {
     list-style-type: none;
     text-align: left;
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
+
+
 
 .notebook-btn {
     background: none;
@@ -81,16 +91,6 @@
     padding: 15px;
     color:rgba(245, 245, 220, 0.664);
     display: flex;
-}
-
-.notebook-btn-active {
-    background-color: rgb(92, 64, 50, 0.5);
-    border: none;
-    border-radius: 50px;
-    width: 270px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-weight: bold;
 }
 
 .add-note {
@@ -114,13 +114,13 @@
     margin-left: 15px;
     margin-top: 10px;
     margin-bottom: 15px;
-    color: beige;
+    color: #f5f5dc;
     
 }
 
 .edit-btn {
     display: flex;
-    width: 15px;
+    width: 18px;
     flex-direction: column;
     background: none;
     border: none;
@@ -136,7 +136,7 @@
 
 .delete-btn {
     display: flex;
-    width: 15px;
+    width: 18px;
     flex-direction: column;
     background: none;
     border: none;
@@ -154,4 +154,71 @@
     align-items: center;
     gap: 10px;
     width: 100%;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.notebook-item-active {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(44, 35, 35);
+    border-radius: 15px;
+}
+
+
+.checkmark {
+    display: flex;
+    flex-direction: column;
+    width: 20px;
+    background: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-left: auto;
+
+    &:hover {
+        transform: scale(1.5);
+    }
+}
+
+.add-notebook-input {
+    flex-direction: column;
+    border: none;
+    background: none;
+    color: beige;
+    border-radius: 5px;
+    height: 20px;
+    width: 270px;
+    font-size: 16px;
+    
+
+    &:focus {
+        outline: none;
+    }
+
+}
+
+.add-notebook-input::placeholder {
+    color: beige;
+    display: flex;
+    font-size: 16px;
+    font-family: google sans, sans-serif;
+}
+
+.add-notebook {
+    display: flex;
+    height: 20px;
+    margin-bottom: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
