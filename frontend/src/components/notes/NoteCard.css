@@ -1,11 +1,12 @@
 .note-card {
     background-color: rgba(24, 17, 16);
-    border: 1px solid rgb(215, 215, 215);
-    border-radius: 24px;
-    padding: 20px;
+    border: 1px solid rgba(255, 241, 233, 0.167);
+    border-radius: 18px;
+    padding: 15px;
     box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
-    max-width: 395px;
-    margin: 5px;
+    max-width: 375px;
+    height: 220px;
+    margin: 4px;
 }
 
 .note-card-title {
@@ -17,7 +18,7 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin: 20px 0px;
+    margin: 30px 0px;
 }
 
 .note-card-date {

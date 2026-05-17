@@ -1,0 +1,48 @@
+.header-bar {
+    width: 100%;
+    max-height: 20%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.date-text {
+    font-size: .8rem;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.folder-text {
+    font-size: .95rem;
+    font-weight: 200;
+}
+
+.theme-icon {
+  float: right;
+  cursor: pointer;
+  margin-right: 25px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-position: center;
+  transition: background 0.4s ease;
+}
+
+.theme-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme-icon:active {
+  background: rgba(255, 255, 255, 0.4) radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.4) 1%) center/15000%;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+

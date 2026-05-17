@@ -1,47 +1,54 @@
 import "./SideBar.css";
 import { useState } from 'react';
 import Modal from 'react-modal';
+import logo from '../../assets/noteLogo.svg';
+import edit from '../../assets/editLogo.svg';
+import erase from '../../assets/deleteLogo.svg';
+import checkmark from '../../assets/checkmark.svg';
 
 function SideBar() {
 
-    const [notebook, setNotebook] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState<string>('');
-    const [openModal, setOpenModal] = useState(false);
+    type Notebook = {
+        id: number;
+        name: string;
+    };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-    const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
-    if (inputValue.trim()) {
-      // 3. Create a NEW array with the existing items plus the new one
-      setNotebook(prevItems => [...prevItems, inputValue]);
-      setInputValue(''); // Reset input field
-      setOpenModal(false);
-    }
-  };
+    const [notebook, setNotebook] = useState<Notebook[]>([]);
+    const [notebookInputValue, setNotebookInputValue] = useState<string>('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
 
-    function setIsOpen() {
-        setOpenModal(true);
-    }
-
-    function setCloseModal() {
-        setOpenModal(false);
-    }
+    const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+    const [titleInputValue, setTitleInputValue] = useState<string>('');
+    const [noteInputValue, setNoteInputValue] = useState<string>('');
     
+
+    const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
+    const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
+
+    const addNotebook = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if(!notebookInputValue.trim()) return;
+        const newNotebook = {id: Date.now(), name: notebookInputValue};
+        setNotebook((prev) => [newNotebook, ...prev]);
+        setNotebookInputValue("");
+        setIsEditing(false);
+    };
+
 
     return (
         <>
             <aside className="side-bar">
-                <h2>Side Bar Header!</h2>
-                <button className="new-note-btn"><span className="plus">+</span>
-                 New note</button>
-                <div className="notebook">
-                    <label>NOTEBOOKS</label>
-                    <button className="plus-btn" onClick={setIsOpen}> + </button>
+                
+                <div className = "logo-title">
+                    <img className="logo-img" src={logo} alt="Logo" />
+                    <h1>notekeeper</h1>
                 </div>
 
-                <Modal isOpen={openModal}
+                <button className="new-note-btn" onClick={setAddNoteOpen}><span className="plus">+</span>
+                 New note</button>
+
+                 <Modal isOpen={isAddNoteOpen}
                     style={{
                         overlay: {
                             position: 'fixed',
@@ -49,45 +56,83 @@ function SideBar() {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            backgroundColor: 'rgba(223, 145, 164, 0.75)'
+                            backgroundColor: 'rgba(46, 45, 45, 0.75)'
                         },
                         content: {
                             position: 'absolute',
-                            top: '300px',
-                            left: '600px',
-                            right: '600px',
-                            bottom: '300px',
+                            top: '100px',
+                            left: '500px',
+                            right: '500px',
+                            bottom: '100px',
                             border: '1px solid #070303',
-                            background: '#423232',
+                            background: '#1b1919',
                             overflow: 'auto',
                             borderRadius: '20px',
                             outline: 'none',
                             padding: '20px',
                             boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-
-
                         }
                     }}
                 >
-                    <h2>Enter input:</h2>
-                    <form onSubmit={handleSubmit}>
-                        <input
+
+                     <label>
+                        Title:
+                        <input 
                             type="text"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            placeholder="Add a Notebook..."
+                            placeholder="Enter a title..."
+                            value={titleInputValue}
+                            onChange={(e) => setTitleInputValue(e.target.value)}
+                         />
+                    </label>
+
+                    <label>
+                        Write a note:
+                        <textarea 
+                            className="add-note" 
+                            placeholder="Enter a note..."
+                            value={noteInputValue}
+                            onChange={(e) => setNoteInputValue(e.target.value)}
                         />
-                        <button type="submit">Add to list</button>
-                        <button className="close-modal" onClick={setCloseModal}> X </button>
-                    
-                    </form>
+                    </label>
+
+                    <button onClick={setAddNoteClosed}>Close</button>
                 </Modal>
 
+
+                <div className="notebook">
+                    <label><h2>NOTEBOOKS</h2></label>
+                    <button className="plus-btn" onClick={() => setIsEditing(true)}> + </button>
+                </div>
+
                 <ul className="notebook-list">
-                    {notebook.map((item, index) => (
-                        <li key={index}>{item}</li>
+
+                    {isEditing && 
+                    <div className="add-notebook">
+                        <input 
+                            maxLength={15}
+                            className="add-notebook-input"
+                            type="text"
+                            placeholder="New Notebook..."
+                            value={notebookInputValue}
+                            onChange={(e) => setNotebookInputValue(e.target.value)} />
+                        <button type="submit" onClick={addNotebook} className="checkmark"><img src={checkmark} alt="checkmark" /></button>
+                    </div>
+                }
+                    
+                    {notebook.map((notebook) => (
+                        <div key={notebook.id}>
+                            <li 
+                                onClick={() => setSelectedListItem(notebook.id)}
+                                className={selectedListItem === notebook.id ? "notebook-item-active" : "notebook-item"}>
+                                    {notebook.name}
+                                <button className="edit-btn"><img src={edit} alt="edit button" /></button>
+                                <button className="delete-btn"><img src={erase} alt="edit button" /></button>
+                            </li>
+                        </div>    
                     ))}
+
                 </ul>
+ 
 
             </aside>
             
