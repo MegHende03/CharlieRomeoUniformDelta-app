@@ -16,8 +16,8 @@ input {
     border: none;
     padding-top: 8px;
     padding-bottom: 8px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 18px;
+    padding-right: 18px;
     background-color: rgb(51, 204, 153, 0.4);
     border-radius: 10px;
     margin-top: 7px;
@@ -93,13 +93,6 @@ input {
     display: flex;
 }
 
-.add-note {
-    background-color: pink;
-    display: flex;
-    resize: none;
-    justify-content: center;
-    align-content: center;
-}
 
 .logo-img {
     display: flex;
@@ -177,8 +170,8 @@ input {
 .checkmark {
     display: flex;
     flex-direction: column;
-    width: 20px;
     background: none;
+    width: 25px;
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -188,6 +181,7 @@ input {
         transform: scale(1.5);
     }
 }
+
 
 .add-notebook-input {
     flex-direction: column;
@@ -207,7 +201,7 @@ input {
 }
 
 .add-notebook-input::placeholder {
-    color: beige;
+    color: rgba(245, 245, 220, 0.555);
     display: flex;
     font-size: 16px;
     font-family: google sans, sans-serif;
@@ -215,10 +209,36 @@ input {
 
 .add-notebook {
     display: flex;
-    height: 20px;
+    height: 34px;
     margin-bottom: 10px;
     padding-top: 7px;
     padding-bottom: 7px;
     padding-left: 10px;
-    padding-right: 10px;
+    padding-right: 6px;
+}
+
+.title-input {
+    height: 15%;
+    width: 100%;
+    background: none;
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::placeholder {
+        margin-bottom: 0;
+    }
+    
+}
+
+.note-input {
+    background-color: pink;
+    display: flex;
+    resize: none;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    height: 75%;
 }
