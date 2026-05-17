@@ -6,6 +6,7 @@ function HeaderBar() {
   return (
     <>
       <header className="header-bar">
+
         <div className="theme-icon">
           <FontAwesomeIcon icon={faPalette} size="lg" />
         </div>

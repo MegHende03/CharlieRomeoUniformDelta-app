@@ -1,11 +1,12 @@
 import "./SideBar.css";
 import { useState } from 'react';
-import Modal from 'react-modal';
 import logo from '../../assets/noteLogo.svg';
 import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
 import checkmark from '../../assets/checkmark.svg';
 import close from '../../assets/closeLogo.svg';
+import FormDialog from '../dialog/FormDialog.tsx'
+
 
 function SideBar() {
 
@@ -14,28 +15,13 @@ function SideBar() {
         name: string;
     };
 
-    type Note = {
-        id: number;
-        title: string;
-        content: string;
-        date: Date;
-    }
-
     const [notebook, setNotebook] = useState<Notebook[]>([]);
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
     const [isAdding, setIsAdding] = useState(false);
-    const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
     const [editingId, setEditingId] = useState<number | null>(null);
-
-    const [note, setNote] = useState<Note[]>([]);
-    const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
-    const [titleInputValue, setTitleInputValue] = useState<string>('');
-    const [noteInputValue, setNoteInputValue] = useState<string>('');
     
-
-    const setAddNoteOpen = () => {setIsAddNoteOpen(true);};
-    const setAddNoteClosed = () => {setIsAddNoteOpen(false);};
-
+    const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
+    
     const addNotebook = () => {
         console.log("In addNotebook");
         setEditingId(null);
@@ -72,7 +58,6 @@ function SideBar() {
     }
 
 
-
     return (
         <>
             <aside className="side-bar">
@@ -82,55 +67,8 @@ function SideBar() {
                     <h1>notekeeper</h1>
                 </div>
 
-                <button className="new-note-btn" onClick={setAddNoteOpen}><span className="plus">+</span>
-                 New note</button>
-
-                 <Modal isOpen={isAddNoteOpen}
-                    style={{
-                        overlay: {
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(46, 45, 45, 0.75)'
-                        },
-                        content: {
-                            position: 'absolute',
-                            top: '150px',
-                            left: '600px',
-                            right: '600px',
-                            bottom: '150px',
-                            border: '1px solid #070303',
-                            background: '#1b1919',
-                            overflow: 'auto',
-                            borderRadius: '20px',
-                            outline: 'none',
-                            padding: '20px',
-                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-                        }
-                    }}
-                >           <div>Enter a new note:</div>
-                            <input 
-                                className="title-input"
-                                type="text"
-                                placeholder="Enter a title..."
-                                value={titleInputValue}
-                              
-                            />
-                            
-                        
-                        <textarea 
-                            className="note-input" 
-                            placeholder="Enter a note..."
-                            value={noteInputValue}
-                           
-                        />
-
-                    <button onClick={setAddNoteClosed}>Close</button>
-                </Modal>
-
-
+                <FormDialog notebookId={selectedListItem} />
+                
                 <div className="notebook">
                     <label><h2>NOTEBOOKS</h2></label>
                     <button className="plus-btn" onClick={() => setIsAdding(true)}> + </button>
@@ -185,7 +123,7 @@ function SideBar() {
                                                     }
                                                 }}
                                             />
-
+                                    
                                             {!notebookInputValue.trim() ? (<button type="submit" onClick={() => handleNameChangeSubmit(notebook.id, notebookInputValue)} className="checkmark">
                                                 <img src={close} alt="close" /></button>) :
                                                 (<button type="submit" onClick={() => handleNameChangeSubmit(notebook.id, notebookInputValue)} className="checkmark">
