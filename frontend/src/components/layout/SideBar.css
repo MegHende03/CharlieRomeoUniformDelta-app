@@ -9,6 +9,7 @@ input {
 .side-bar {
     background-color: #130e0e;
     width: 300px;
+    flex-shrink: 0;
     min-height: 100vh;
 }
 
