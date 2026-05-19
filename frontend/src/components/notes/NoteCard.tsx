@@ -1,18 +1,19 @@
 import "./NoteCard.css";
+import type { Note } from '../../pages/HomePage';
 
-function NoteCard() {
+type NotesCardProps = {
+  selectedListItem: number | null;
+  setNote: React.Dispatch<React.SetStateAction<Note[]>>;
+  note: Note;
+};
+
+function NoteCard({ selectedListItem, setNote, note } : NotesCardProps) {
   return (
     <>
       <div className="note-card">
-        <p className="note-card-title">Note Title</p>
+        <p className="note-card-title">{note.title}</p>
         <p className="note-card-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          {note.content}
         </p>
         <p className="note-card-date">6 days ago</p>
       </div>

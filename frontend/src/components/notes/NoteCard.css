@@ -1,16 +1,19 @@
 .note-card {
     background-color: rgba(24, 17, 16);
-    border: 1px solid rgba(255, 241, 233, 0.167);
+    border: 1px solid rgb(92, 64, 50, 0.5);
     border-radius: 18px;
     padding: 15px;
-    box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
-    max-width: 375px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+    width: 375px;
     height: 220px;
     margin: 4px;
+    
 }
 
 .note-card-title {
     font-size: 1.1rem;
+    border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+    padding-bottom: 10px;
 }
 
 .note-card-description {
@@ -18,9 +21,10 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin: 30px 0px;
+    margin: 10px 0px;
 }
 
 .note-card-date {
+    margin-top: 110px;
     font-size: 0.8rem;
 }

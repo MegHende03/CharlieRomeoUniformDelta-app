@@ -1,3 +1,5 @@
+
+
 .header-bar {
     width: 100%;
     max-height: 20%;
@@ -6,8 +8,8 @@
 }
 
 .welcome-text {
-    font-size: 1.1rem;
-    font-weight: 400;
+    font-size: 1.3rem;
+    font-weight: bold;
 }
 
 .date-text {
@@ -18,7 +20,10 @@
 
 .folder-text {
     font-size: .95rem;
-    font-weight: 200;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+
 }
 
 .theme-icon {

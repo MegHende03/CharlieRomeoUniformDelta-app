@@ -5,20 +5,18 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
 import "./FormDialog.css";
+import type { Note } from '../../pages/HomePage';
 
-function FormDialog( {notebookId} : any ) {
+type FormProps = {
+  selectedListItem: number | null;
+  setNote: React.Dispatch<React.SetStateAction<Note[]>>;
+  note: Note[];
+};
+
+function FormDialog({selectedListItem, setNote, note} : FormProps) {
  
-  type Note = {
-        id: number;
-        title: string;
-        content: string;
-        notebookId: number;
-    }
-  
   const [open, setOpen] = React.useState(false);
-  const [note, setNote] = useState<Note[]>([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,7 +26,7 @@ function FormDialog( {notebookId} : any ) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries()) as {
@@ -43,13 +41,17 @@ function FormDialog( {notebookId} : any ) {
       id: Date.now(),
       title: title,
       content: content,
-      notebookId: notebookId };
+      notebookId: selectedListItem };
     
-    setNote((prev) => [...prev, newNote]);
-    
-      console.log(newNote);
+      setNote((prev) => [...prev, newNote]);
+  
+
       handleClose();
   };
+
+   React.useEffect(() => {
+        console.log(note);
+      }, [note]);
 
   return (
     <>
@@ -69,6 +71,11 @@ function FormDialog( {notebookId} : any ) {
               type="text"
               fullWidth
               variant="standard"
+              slotProps={{
+                htmlInput: {
+                  maxLength: 30,
+                },
+               }}
             />
             
             <TextField
@@ -80,8 +87,7 @@ function FormDialog( {notebookId} : any ) {
               name="content"
               label="Enter a note..."
               type="text"
-              rows={10}
-              
+              maxRows={10}
             />
           </form>
 

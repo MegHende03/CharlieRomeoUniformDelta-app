@@ -5,25 +5,25 @@ import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
 import checkmark from '../../assets/checkmark.svg';
 import close from '../../assets/closeLogo.svg';
-import FormDialog from '../dialog/FormDialog.tsx'
+import FormDialog from '../dialog/FormDialog'
+import type { Note, Notebook } from '../../pages/HomePage';
 
+interface SidebarProps {
+    selectedListItem: number | null;
+    setSelectedListItem: React.Dispatch<React.SetStateAction<number | null>>;
+    setNote: React.Dispatch<React.SetStateAction<Note[]>>;
+    note: Note[];
+    notebook: Notebook[];
+    setNotebook: React.Dispatch<React.SetStateAction<Notebook[]>>;
+};
 
-function SideBar() {
+function SideBar({ selectedListItem, setSelectedListItem, setNote, note, notebook, setNotebook} : SidebarProps) {
 
-    type Notebook = {
-        id: number;
-        name: string;
-    };
-
-    const [notebook, setNotebook] = useState<Notebook[]>([]);
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
     const [isAdding, setIsAdding] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
-    
-    const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
-    
+
     const addNotebook = () => {
-        console.log("In addNotebook");
         setEditingId(null);
         if(!notebookInputValue.trim()) return;
         const newNotebook = {id: Date.now(), name: notebookInputValue};
@@ -67,7 +67,7 @@ function SideBar() {
                     <h1>notekeeper</h1>
                 </div>
 
-                <FormDialog notebookId={selectedListItem} />
+                <FormDialog selectedListItem={selectedListItem} setNote={setNote} note={note} />
                 
                 <div className="notebook">
                     <label><h2>NOTEBOOKS</h2></label>
@@ -87,7 +87,6 @@ function SideBar() {
                             value={notebookInputValue}
                             onChange={(e) => setNotebookInputValue(e.target.value)}
                             onKeyDown={(e) => { 
-                                console.log(e.key);
                                 if (e.key === "Enter") {
                                     addNotebook();
                                 }
@@ -103,7 +102,8 @@ function SideBar() {
                     
                     {notebook.map((notebook) => (
                         <div key={notebook.id}>
-                                <li onClick={() => setSelectedListItem(notebook.id)}
+                                <li onClick={() => 
+                                    setSelectedListItem(notebook.id)}
                                     className={selectedListItem === notebook.id ? "notebook-item-active" : "notebook-item"}>
                                     {(editingId === notebook.id && !isAdding) ? (
                                         <>
@@ -117,7 +117,6 @@ function SideBar() {
                                                 value={notebookInputValue}
                                                 onChange={(e) => setNotebookInputValue(e.target.value)} 
                                                 onKeyDown={(e) => { 
-                                                    console.log(e.key);
                                                     if (e.key === "Enter") {
                                                         handleNameChangeSubmit(notebook.id, notebookInputValue);
                                                     }
