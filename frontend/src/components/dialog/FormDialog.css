@@ -46,7 +46,7 @@
 }
 
 .MuiInputLabel-root.Mui-focused {
-    color: rgb(51, 204, 153) !important;
+    color: #33cc99 !important;
 }
 
 .MuiOutlinedInput-root.Mui-focused fieldset {

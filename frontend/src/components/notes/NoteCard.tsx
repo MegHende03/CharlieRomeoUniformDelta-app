@@ -44,6 +44,9 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
     setEditedInput("");
   };
 
+  const handleDelete = (id: number) => {
+        setNote(prev => prev.filter(prev => prev.id != id));
+    }
   
   return (
     <>
@@ -53,7 +56,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
               <p className="note-card-description">
                 {note.content}
               </p>
-              <p className="note-card-date">{daysAgo} Days ago...</p>
+              <p className="note-card-date">Edited {daysAgo} Days ago...</p>
             </div> 
           }
 
@@ -68,7 +71,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                   </p>
                   <p className="note-card-date">{daysAgo} Days ago...</p>
                   <button className="note-card-edit-btn" onClick={() => setEditingId(expandedNoteId)}><img src={edit} alt="edit"/></button>
-                  <button className="note-card-delete-btn"><img src={erase} alt="delete"/></button>
+                  <button className="note-card-delete-btn" onClick={() => handleDelete(expandedNoteId)}><img src={erase} alt="delete"/></button>
 
                 </div>
             }

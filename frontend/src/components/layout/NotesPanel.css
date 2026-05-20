@@ -3,4 +3,12 @@
     grid-template-columns: 375px 375px 375px 375px;
     margin-top: 10px;
     gap: 15px;
+    position: relative;
+}
+
+@media screen and (min-wdith: 600px) {
+    .notes-panel {
+        grid-template-columns: repeat(4, 1fr);
+        justify-content: space-evenly;
+    }
 }
