@@ -96,8 +96,8 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
                             }}
                         />
                         {!notebookInputValue.trim() ? 
-                        (<button type="submit" onClick={() => setIsAdding(false)} className="checkmark"><img src={close} alt="close" /></button>) : 
-                        (<button type="submit" onClick={addNotebook} className="checkmark"><img src={checkmark} alt="checkmark" /></button>)}
+                        (<button type="submit" onClick={() => setIsAdding(false)} className="checkmark-close"><img src={close} alt="close" /></button>) : 
+                        (<button type="submit" onClick={addNotebook} className="checkmark-close"><img src={checkmark} alt="checkmark" /></button>)}
 
                     </div>
                 }

@@ -146,7 +146,7 @@ input {
 }
 
 
-.checkmark {
+.checkmark-close {
     display: flex;
     flex-direction: column;
     background: none;
