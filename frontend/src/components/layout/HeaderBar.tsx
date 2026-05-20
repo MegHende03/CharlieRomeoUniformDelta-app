@@ -10,6 +10,9 @@ type HeaderBarProps ={
 
 
 function HeaderBar( {notebook, selectedListItem} : HeaderBarProps) {
+
+const matchingElement = notebook.find(item => item.id === selectedListItem);
+
   return (
     <>
       <header className="header-bar">
@@ -17,9 +20,9 @@ function HeaderBar( {notebook, selectedListItem} : HeaderBarProps) {
         <div className="theme-icon">
           <FontAwesomeIcon icon={faPalette} size="lg" />
         </div>
-        <p className="welcome-text">Good Morning!</p>
+        <p className="welcome-text">Good Morning, Name!</p>
         <p className="date-text">Thu, Oct 05 2023</p>
-        <p className="folder-text">JavaScript guide</p>
+        <p className="folder-text">{matchingElement?.name}</p>
       </header>
     </>
   );

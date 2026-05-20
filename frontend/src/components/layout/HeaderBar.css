@@ -5,24 +5,28 @@
     max-height: 20%;
     padding-left: 10px;
     padding-right: 10px;
+    height: 135px;
+    border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+    
 }
 
 .welcome-text {
     font-size: 1.3rem;
     font-weight: bold;
+    align-content: center;
 }
 
 .date-text {
     font-size: .8rem;
     margin-top: 10px;
     margin-bottom: 30px;
+    align-content: center;
 }
 
 .folder-text {
     font-size: .95rem;
     font-weight: bold;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+    padding-top: 20px;
 
 }
 

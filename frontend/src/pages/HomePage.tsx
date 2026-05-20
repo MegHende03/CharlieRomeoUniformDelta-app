@@ -32,10 +32,14 @@ function HomePage() {
             notebook={notebook}
             setNotebook={setNotebook}
               />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <main className="home-page-content">
-            <HeaderBar notebook={notebook} selectedListItem={selectedListItem} />
-            <NotesPanel selectedListItem={selectedListItem} setNote={setNote} note={note}/>
+        <div className="home-page-content">
+          <main>
+            <div>
+              <HeaderBar notebook={notebook} selectedListItem={selectedListItem} />
+            </div>
+            <div >
+              <NotesPanel selectedListItem={selectedListItem} setNote={setNote} note={note}/>
+            </div>
           </main>
         </div>
       </div>

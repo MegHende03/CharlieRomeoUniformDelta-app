@@ -18,13 +18,14 @@
 
 .note-card-description {
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin: 10px 0px;
+    margin: 20px 0px;
+    overflow-wrap: break-word;
+    height: 100px;
 }
 
 .note-card-date {
-    margin-top: 110px;
     font-size: 0.8rem;
 }

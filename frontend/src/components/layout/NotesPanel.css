@@ -1,5 +1,6 @@
 .notes-panel {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 375px 375px 375px 375px;
     margin-top: 10px;
+    gap: 15px;
 }

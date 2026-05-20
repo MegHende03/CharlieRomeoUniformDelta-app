@@ -27,6 +27,7 @@
 
 .dialog-title {
     color: rgb(158, 80, 16);
+    display: flex;
 
 }
 
@@ -54,4 +55,13 @@
 
 .MuiInput-underline:after {
     border-bottom-color: rgb(51, 204, 153) !important;
+}
+
+.alert {
+    color: red;
+    margin-left: 20px;
+}
+
+.MuiPaper-root {
+    background-color: #201919 !important; 
 }

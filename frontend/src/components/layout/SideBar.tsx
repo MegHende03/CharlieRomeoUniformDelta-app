@@ -55,6 +55,9 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
     const handleDelete = (id: number) => {
         const updatedNotebook = notebook.filter(notebook => notebook.id != id);
         setNotebook(updatedNotebook);
+
+        const updatedNote = note.filter(note => note.notebookId != id);
+        setNote(updatedNote);
     }
 
 

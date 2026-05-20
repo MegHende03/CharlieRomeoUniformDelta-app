@@ -28,6 +28,7 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if(!selectedListItem) return;
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries()) as {
       title: string;
@@ -59,6 +60,8 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
                  New note</button>
       <Dialog  fullWidth maxWidth="sm" open={open} onClose={handleClose}>
         <DialogTitle className="dialog-title">New Note:</DialogTitle>
+        {!selectedListItem &&
+            <p className='alert'> ⚠︎ Please select a Notebook before making a note!</p>}
         <DialogContent>
         
           <form onSubmit={handleSubmit} id="note-form">
@@ -90,7 +93,6 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
               maxRows={10}
             />
           </form>
-
 
         </DialogContent>
         <DialogActions>

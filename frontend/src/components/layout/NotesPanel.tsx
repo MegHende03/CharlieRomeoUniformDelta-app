@@ -13,8 +13,8 @@ function NotesPanel({ selectedListItem, setNote, note } : NotesPanelProps) {
   return (
     <>
       <div className="notes-panel">
-      {note.map((note) =>
-          <NoteCard selectedListItem={selectedListItem} setNote={setNote} note={note} />
+      {note.filter(item => item.notebookId === selectedListItem).map((note) =>
+            <NoteCard selectedListItem={selectedListItem} setNote={setNote} note={note} />
       )}
       </div>
     </>
