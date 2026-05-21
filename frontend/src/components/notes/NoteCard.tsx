@@ -32,17 +32,37 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
   );}
 
   const handleNoteChange = (id: number, newTitle: string, newNote: string): void => {
-   
+    
+    //if both arent edited
+    if(!newTitle.trim() && !newNote.trim()) {
+      setNote((prevTitle) =>
+        prevTitle.map((note) =>
+            note.id === id ? { ...note} : note )
+      );
+
+      setNote((prevNote) =>
+      prevNote.map((note) =>
+          note.id === id ? { ...note} : note )
+      );
+
+      setEditingId(null);
+      setEditedTitle("");
+      setEditedNote("");
+      return;
+    }
+
+
+    //if title is not edited, keep current title, change note
     if(!newTitle.trim()) {
       setNote((prevTitle) =>
         prevTitle.map((note) =>
             note.id === id ? { ...note} : note )
-    );
+      );
 
-    setNote((prevNote) =>
-    prevNote.map((note) =>
-        note.id === id ? { ...note, content: newNote} : note )
-    );
+      setNote((prevNote) =>
+      prevNote.map((note) =>
+          note.id === id ? { ...note, content: newNote} : note )
+      );
 
     setEditingId(null);
     setEditedTitle("");
@@ -50,6 +70,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
     return;
     }
     
+    //if note isnt edited, keep note, change title
     if(!newNote.trim()) {
     setNote((prevTitle) =>
         prevTitle.map((note) =>
@@ -57,9 +78,9 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
     );
 
     setNote((prevNote) =>
-    prevNote.map((note) =>
-        note.id === id ? { ...note} : note )
-    );
+      prevNote.map((note) =>
+          note.id === id ? { ...note} : note )
+      );
 
     setEditingId(null);
     setEditedTitle("");
@@ -67,6 +88,8 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
     return;
     }
 
+
+    //If both are edited, change both
     setNote((prevTitle) =>
         prevTitle.map((note) =>
             note.id === id ? { ...note, title: newTitle} : note )
@@ -106,7 +129,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                   <p className="note-card-title-expanded">{note.title}</p>
                   <p className="note-card-description-expanded">{note.content}</p>
                   <div className="bottom-content">
-                    <p className="note-card-date">Edited {daysAgo} Days ago...</p>
+                    <p className="note-card-date-expanded">Edited {daysAgo} Days ago...</p>
                     <button className="note-card-edit-btn" onClick={() => setEditingId(expandedNoteId)}><img src={edit} alt="edit"/></button>
                     <button className="note-card-delete-btn" onClick={() => handleDelete(expandedNoteId)}><img src={erase} alt="delete"/></button>
                   </div>

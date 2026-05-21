@@ -32,6 +32,9 @@
 }
 
 .note-card-date {
+    font-size: 0.8rem;
+}
+.note-card-date-expanded {
     font-size: 1.0rem;
 }
 
@@ -176,7 +179,7 @@
 
     padding: 20px 10px 10px 10px;
 
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgb(92, 64, 50, 0.5);
 }
 .note-card-expanded-editing {
     background-color: #130e0e;
