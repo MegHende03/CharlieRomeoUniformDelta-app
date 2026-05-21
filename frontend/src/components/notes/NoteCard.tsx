@@ -3,6 +3,7 @@ import type { Note } from '../../pages/HomePage';
 import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
 import close from '../../assets/closeLogo.svg';
+import save from '../../assets/saveLogo.svg';
 import { useState } from 'react';
 
 type NotesCardProps = {
@@ -16,7 +17,8 @@ type NotesCardProps = {
 
 function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpandedNoteId, setNote } : NotesCardProps) {
 
-  const [editedInput, setEditedInput] = useState<string>("");
+  const [editedTitle, setEditedTitle] = useState<string>("");
+  const [editedNote, setEditedNote] = useState<string>("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const expanded = expandedNoteId === note.id;
 
@@ -29,19 +31,55 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
     differenceInMs / (1000 * 60 * 60 * 24)
   );}
 
-  const handleTitleChange = (id: number, newTitle: string): void => {
+  const handleNoteChange = (id: number, newTitle: string, newNote: string): void => {
+   
     if(!newTitle.trim()) {
-        setEditingId(null);
-        setEditedInput("");
-        return;
+      setNote((prevTitle) =>
+        prevTitle.map((note) =>
+            note.id === id ? { ...note} : note )
+    );
+
+    setNote((prevNote) =>
+    prevNote.map((note) =>
+        note.id === id ? { ...note, content: newNote} : note )
+    );
+
+    setEditingId(null);
+    setEditedTitle("");
+    setEditedNote("");
+    return;
     }
+    
+    if(!newNote.trim()) {
     setNote((prevTitle) =>
         prevTitle.map((note) =>
             note.id === id ? { ...note, title: newTitle} : note )
     );
 
+    setNote((prevNote) =>
+    prevNote.map((note) =>
+        note.id === id ? { ...note} : note )
+    );
+
     setEditingId(null);
-    setEditedInput("");
+    setEditedTitle("");
+    setEditedNote("");
+    return;
+    }
+
+    setNote((prevTitle) =>
+        prevTitle.map((note) =>
+            note.id === id ? { ...note, title: newTitle} : note )
+    );
+
+    setNote((prevNote) =>
+    prevNote.map((note) =>
+        note.id === id ? { ...note, content: newNote} : note )
+    );
+
+    setEditingId(null);
+    setEditedTitle("");
+    setEditedNote("");
   };
 
   const handleDelete = (id: number) => {
@@ -65,14 +103,13 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                   <button className="note-card-close-btn" onClick={() => setExpandedNoteId(null) }>
                     <img src={close} alt="close"/>
                   </button>
-                  <p className="note-card-title">{note.title}</p>
-                  <p className="note-card-description">
-                    {note.content}
-                  </p>
-                  <p className="note-card-date">{daysAgo} Days ago...</p>
-                  <button className="note-card-edit-btn" onClick={() => setEditingId(expandedNoteId)}><img src={edit} alt="edit"/></button>
-                  <button className="note-card-delete-btn" onClick={() => handleDelete(expandedNoteId)}><img src={erase} alt="delete"/></button>
-
+                  <p className="note-card-title-expanded">{note.title}</p>
+                  <p className="note-card-description-expanded">{note.content}</p>
+                  <div className="bottom-content">
+                    <p className="note-card-date">Edited {daysAgo} Days ago...</p>
+                    <button className="note-card-edit-btn" onClick={() => setEditingId(expandedNoteId)}><img src={edit} alt="edit"/></button>
+                    <button className="note-card-delete-btn" onClick={() => handleDelete(expandedNoteId)}><img src={erase} alt="delete"/></button>
+                  </div>
                 </div>
             }
 
@@ -84,22 +121,22 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
 
                       <input
                         key={note.id}
-                        placeholder={note.title}
+                        placeholder={`${note.title}...`}
                         required
                         className="edit-title"
                         maxLength={30}
-                        value={editedInput}
-                        onChange={(e) => setEditedInput(e.target.value)}
-                        onKeyDown={(e) => { 
-                          if (e.key === "Enter") {
-                              handleTitleChange(note.id, editedInput);}
-                        }}
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
                       />
                       <textarea
+                        key={note.id}
                         className='edit-content'
-                        placeholder= {note.content}
-                        required
+                        placeholder={`${note.content}...`}
+                        value={editedNote}
+                        onChange={(e) => setEditedNote(e.target.value)}
                       />
+
+                      <button className="note-card-save-btn" onClick={() => handleNoteChange(note.id, editedTitle, editedNote)}><img src={save} alt="save"/></button>
                     </div>
               }
     </>

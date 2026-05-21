@@ -58,7 +58,7 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
     <>
       <button className="new-note-btn" onClick={handleClickOpen}><span className="plus">+</span>
                  New note</button>
-      <Dialog  fullWidth maxWidth="sm" open={open} onClose={handleClose}>
+      <Dialog  fullWidth maxWidth="lg" open={open} onClose={handleClose}>
         <DialogTitle className="dialog-title">New Note:</DialogTitle>
         {!selectedListItem &&
             <p className='alert'> ⚠︎ Please select a Notebook before making a note!</p>}
@@ -91,6 +91,12 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
               label="Enter a note..."
               type="text"
               maxRows={10}
+              sx={{
+                '.MuiTextField-root, .MuiInputBase-root' : {
+                  height: 400,
+                  
+                }
+              }}
             />
           </form>
 
