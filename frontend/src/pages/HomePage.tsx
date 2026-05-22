@@ -1,22 +1,45 @@
-import SideBar from "../components/layout/SideBar.tsx";
-import NotesPanel from "../components/layout/NotesPanel.tsx";
-import HeaderBar from "../components/layout/HeaderBar.tsx";
+import SideBar from "../components/layout/SideBar";
+import NotesPanel from "../components/layout/NotesPanel";
 import "./HomePage.css";
-import { useState } from "react";
+import HeaderBar from "../components/layout/HeaderBar";
+import { useState } from 'react';
+
+export type Note = {
+        id: number;
+        title: string;
+        content: string;
+        notebookId: number | null;
+  };
+
+export type Notebook = {
+        id: number;
+        name: string;
+    };
 
 function HomePage() {
-  const [selectedNotebookName, setSelectedNotebookName] = useState(
-    "Select a notebook...",
-  );
+
+  const [selectedListItem, setSelectedListItem] =  useState<number | null>(null);
+  const [note, setNote] = useState<Note[]>([]);
+  const [notebook, setNotebook] = useState<Notebook[]>([]);
 
   return (
     <>
       <div style={{ display: "flex" }}>
-        <SideBar onNotebookClick={setSelectedNotebookName} />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <main className="home-page-content">
-            <HeaderBar selectedNotebookName={selectedNotebookName} />
-            <NotesPanel />
+        <SideBar selectedListItem={selectedListItem} 
+            setSelectedListItem={setSelectedListItem}
+            note={note}
+            setNote={setNote}
+            notebook={notebook}
+            setNotebook={setNotebook}
+              />
+        <div className="home-page-content">
+          <main>
+            <div>
+              <HeaderBar notebook={notebook} selectedListItem={selectedListItem} />
+            </div>
+            <div >
+              <NotesPanel selectedListItem={selectedListItem} setNote={setNote} note={note}/>
+            </div>
           </main>
         </div>
       </div>
