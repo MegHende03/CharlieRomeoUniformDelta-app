@@ -33,7 +33,7 @@
 .theme-icon {
   float: right;
   cursor: pointer;
-  margin-right: 25px;
+  margin-right: 10px;
   width: 40px;
   height: 40px;
   display: flex;
@@ -41,11 +41,12 @@
   justify-content: center;
   border-radius: 50%;
   background-position: center;
-  transition: background 0.4s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .theme-icon:hover {
   background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
 }
 
 .theme-icon:active {
@@ -54,24 +55,11 @@
   transition: background 0s;
 }
 
-.theme-choice {
-  float: right;
-  width: 150px;
-  height: 120px;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-color: rgb(0, 0, 0);
-
-  position: fixed;
-  left:1740px;
-  top: 70px;
-}
 
 .box {
   position: fixed;
   top: 70px;        
-  right: 1%;          
+  right: 4%;          
   display: flex;
   width: 300px;
   height: 200px;
@@ -117,7 +105,42 @@
 }
 
 .scheme-title {
+  display: flex;
   font-family: google sans, sans-serif;
-  width: 80px;
-  height: fit-content;
+  min-width: 300px;
+  border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+  height: 50px;
+  justify-content: center;
+  padding-top: 15px;
+
+  
+}
+
+.sign-up-btn {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+  float: right;
+
+  background: none;
+  background: linear-gradient(150deg, #ce7a1a 0%, #33cc9966 100%);
+  border-radius: 10px;
+
+  background-position: center;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 7px 5px 4px rgb(0, 0, 0);
+  transition: all 0.3s ease-in-out;
+
+
+  &:hover {
+    background-color: rgba(45, 177, 133, 0.4);
+    transform: scale(1.05);
+    transform: translateY(-1px);
+  }
 }

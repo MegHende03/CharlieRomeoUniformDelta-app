@@ -159,7 +159,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                         onChange={(e) => setEditedNote(e.target.value)}
                       />
 
-                      <button className="note-card-save-btn" onClick={() => handleNoteChange(note.id, editedTitle, editedNote)}><img src={save} alt="save"/></button>
+                      <button  className="note-card-save-btn" onClick={() => handleNoteChange(note.id, editedTitle, editedNote)}><img src={save} alt="save"/></button>
                     </div>
               }
     </>

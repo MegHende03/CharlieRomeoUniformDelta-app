@@ -1,5 +1,6 @@
 * {
     font-family: google sans, sans-serif !important;
+
 }
 
 .new-note-btn {
@@ -9,6 +10,7 @@
     padding-left: 18px;
     padding-right: 18px;
     background-color: rgb(51, 204, 153, 0.4);
+    background: linear-gradient(135deg, #ce7a1a 0%, #33cc9966 100%);
     border-radius: 10px;
     margin-top: 7px;
     margin-bottom: 7px;
@@ -19,20 +21,25 @@
     align-content: center;
     font-size: 15px;
     font-family: google sans, sans-serif;
+    box-shadow: 7px 5px 4px rgb(0, 0, 0);
+    transition: all 0.3s ease-in-out;
 
     &:hover {
-        transform: scale(1.1);
+        background-color: rgba(45, 177, 133, 0.4);
+        transform: scale(1.05);
+        transform: translateY(-2px);
     }
 }
 
 .dialog-title {
-    color: rgb(158, 80, 16);
+    color: beige;
     display: flex;
-
+    font-weight: 600;
+    border-bottom: 2px solid #855218;
+    padding-bottom: 10px;
 }
 
 .note-input {
-    background-color: rgb(255, 255, 255);
     display: flex;
     resize: none;
     justify-content: center;
@@ -43,26 +50,5 @@
         font-size: 15px;
         padding-left: 5px;
     }
-}
-
-.MuiInputLabel-root.Mui-focused {
-    color: #33cc99 !important;
-}
-
-.MuiOutlinedInput-root.Mui-focused fieldset {
-    border-color: rgb(51, 204, 153) !important;
-}
-
-.MuiInput-underline:after {
-    border-bottom-color: rgb(51, 204, 153) !important;
-}
-
-.alert {
-    color: red;
-    margin-left: 20px;
-}
-
-.MuiPaper-root {
-    background-color: #a86f6f !important; 
 }
 

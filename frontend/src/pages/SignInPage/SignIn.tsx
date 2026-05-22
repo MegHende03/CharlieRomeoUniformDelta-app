@@ -12,11 +12,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
+import { styled, useColorScheme } from '@mui/material/styles';
 import ForgotPassword from './components/ForgotPassword';
 import AppTheme from './shared-theme/AppTheme';
 import ColorModeSelect from './shared-theme/ColorModeSelect';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from './components/CustomIcons';
+import { GoogleIcon, FacebookIcon } from './components/CustomIcons';
+import logo from '../../assets/noteLogo.svg';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -26,15 +28,17 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
+
+  backgroundColor: 'hsl(0, 9%, 15%)',
+  border: '1px solid #33cc9966',
+
+  color: 'white',
+
+  boxShadow: '0px 10px 30px rgba(0,0,0,0.5)',
+
   [theme.breakpoints.up('sm')]: {
     maxWidth: '450px',
   },
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
@@ -55,12 +59,13 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     backgroundRepeat: 'no-repeat',
     ...theme.applyStyles('dark', {
       backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+        'radial-gradient(circle at top, hsl(0, 9%, 15%), hsl(0, 18%, 3%))',
     }),
   },
 }));
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -115,12 +120,25 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
+    <div className=".mode-dark">
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" sx={{ justifyContent: 'space-between' }}>
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+
+          <div className = "logo-title">
+            <img className="logo-img" src={logo} alt="Logo" />
+              <a
+                href="/"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                }}
+              >
+                <h1>notekeeper</h1>
+              </a>
+          </div>
+
         <Card variant="outlined">
-          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
@@ -140,7 +158,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email"
+                sx={{
+                  color: '#33cc99',
+                  }}
+                >Email</FormLabel>
               <TextField
                 error={emailError}
                 helperText={emailErrorMessage}
@@ -153,11 +175,43 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
+                color={emailError ? 'error' : 'warning'}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    color: 'white',
+
+                    '& fieldset': {
+                      borderColor: '#33cc9966',
+                    },
+
+                    '&:hover fieldset': {
+                      borderColor: '#33cc99',
+                    },
+
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ce7a1a',
+                      borderWidth: '2px',
+                    },
+
+                    '&.Mui-focused': {
+                      boxShadow: '0 0 8px rgba(206, 122, 26, 0.5)',
+                    },
+                  },
+
+                  '& .MuiInputBase-input::placeholder': {
+                    color: 'rgba(255,255,255,0.5)',
+                    opacity: 1,
+                  },
+                }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password"
+                sx={{
+                  color: '#33cc99',
+                }}
+                >Password
+                </FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -170,7 +224,34 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 required
                 fullWidth
                 variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
+                color={passwordError ? 'error' : 'warning'}
+                sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+
+                  '& fieldset': {
+                    borderColor: '#33cc9966',
+                  },
+
+                  '&:hover fieldset': {
+                    borderColor: '#33cc99',
+                  },
+
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#ce7a1a',
+                    borderWidth: '2px',
+                  },
+
+                  '&.Mui-focused': {
+                    boxShadow: '0 0 8px rgba(206, 122, 26, 0.5)',
+                  },
+                },
+
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'rgba(255,255,255,0.5)',
+                  opacity: 1,
+                },
+              }}
               />
             </FormControl>
             <FormControlLabel
@@ -183,6 +264,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               fullWidth
               variant="contained"
               onClick={validateInputs}
+                sx={{
+                  backgroundColor: '#ce7a1a',
+                  color: 'white',
+                  fontWeight: 600,
+                }}
             >
               Sign in
             </Button>
@@ -196,13 +282,24 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               Forgot your password?
             </Link>
           </Box>
-          <Divider>or</Divider>
+          <Divider sx={{ color: 'rgba(255,255,255,0.5)' }}>
+            or
+          </Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               fullWidth
               variant="outlined"
               onClick={() => alert('Sign in with Google')}
               startIcon={<GoogleIcon />}
+              sx={{
+                borderColor: '#33cc9966',
+                color: 'white',
+
+                '&:hover': {
+                  borderColor: '#33cc99',
+                  backgroundColor: 'rgba(51,204,153,0.08)',
+                },
+              }}
             >
               Sign in with Google
             </Button>
@@ -211,13 +308,22 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               variant="outlined"
               onClick={() => alert('Sign in with Facebook')}
               startIcon={<FacebookIcon />}
+              sx={{
+              borderColor: '#33cc9966',
+              color: 'white',
+
+              '&:hover': {
+                borderColor: '#33cc99',
+                backgroundColor: 'rgba(51,204,153,0.08)',
+              },
+            }}
             >
               Sign in with Facebook
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/signup"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
@@ -228,5 +334,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         </Card>
       </SignInContainer>
     </AppTheme>
+
+    </div>
   );
 }

@@ -7,6 +7,7 @@ import checkmark from '../../assets/checkmark.svg';
 import close from '../../assets/closeLogo.svg';
 import FormDialog from '../dialog/FormDialog'
 import type { Note, Notebook } from '../../pages/HomePage';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 interface SidebarProps {
     selectedListItem: number | null;
@@ -16,6 +17,12 @@ interface SidebarProps {
     notebook: Notebook[];
     setNotebook: React.Dispatch<React.SetStateAction<Notebook[]>>;
 };
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function SideBar({ selectedListItem, setSelectedListItem, setNote, note, notebook, setNotebook} : SidebarProps) {
 
@@ -70,7 +77,11 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
                     <h1>notekeeper</h1>
                 </div>
 
+                <ThemeProvider theme={darkTheme}>
+                    
                 <FormDialog selectedListItem={selectedListItem} setNote={setNote} note={note} />
+                
+                </ThemeProvider>
                 
                 <div className="notebook">
                     <label><h2>NOTEBOOKS</h2></label>
