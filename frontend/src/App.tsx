@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import './styles/App.css'
-import HomePage from './pages/HomePage.tsx'
-import AboutPage from './pages/AboutPage.tsx'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import "./styles/App.css";
+import HomePage from "./pages/HomePage.tsx";
+import SignIn from "./pages/SignInPage/SignIn.tsx"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignUp from "./pages/SignUpPage/SignUp.tsx";
+
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
     </>

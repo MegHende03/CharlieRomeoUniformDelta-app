@@ -1,0 +1,146 @@
+
+
+.header-bar {
+    width: 100%;
+    max-height: 20%;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 135px;
+    border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+    
+}
+
+.welcome-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    align-content: center;
+}
+
+.date-text {
+    font-size: .8rem;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    align-content: center;
+}
+
+.notebook-text {
+    font-size: .95rem;
+    font-weight: bold;
+    padding-top: 20px;
+
+}
+
+.theme-icon {
+  float: right;
+  cursor: pointer;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-position: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.theme-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.theme-icon:active {
+  background: rgba(255, 255, 255, 0.4) radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.4) 1%) center/15000%;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+
+.box {
+  position: fixed;
+  top: 70px;        
+  right: 4%;          
+  display: flex;
+  width: 300px;
+  height: 200px;
+  background: #130e0e;
+  border-radius: 16px;
+  z-index: 4;
+  
+}
+.box::before {
+    content: "";
+
+    position: absolute;
+
+    top: -12px;
+    left: 79%;
+
+    transform: translateX(-50%);
+
+    width: 0;
+    height: 1px;
+
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+
+    border-bottom: 12px solid #130e0e;
+}
+.color-buttons{
+  display: grid;
+  grid-template-columns: 105px 105px 105px;
+  justify-content: space-evenly;
+
+}
+
+.original {
+    background: none;
+    width: 10%;
+    height: 10%;
+    border: none;
+    
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.scheme-title {
+  display: flex;
+  font-family: google sans, sans-serif;
+  min-width: 300px;
+  border-bottom: 1px solid rgb(92, 64, 50, 0.5);
+  height: 50px;
+  justify-content: center;
+  padding-top: 15px;
+
+  
+}
+
+.sign-up-btn {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+  float: right;
+
+  background: none;
+  background: linear-gradient(150deg, #ce7a1a 0%, #33cc9966 100%);
+  border-radius: 10px;
+
+  background-position: center;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 7px 5px 4px rgb(0, 0, 0);
+  transition: all 0.3s ease-in-out;
+
+
+  &:hover {
+    background-color: rgba(45, 177, 133, 0.4);
+    transform: scale(1.05);
+    transform: translateY(-1px);
+  }
+}

@@ -1,0 +1,54 @@
+* {
+    font-family: google sans, sans-serif !important;
+
+}
+
+.new-note-btn {
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 18px;
+    padding-right: 18px;
+    background-color: rgb(51, 204, 153, 0.4);
+    background: linear-gradient(135deg, #ce7a1a 0%, #33cc9966 100%);
+    border-radius: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 15px;
+    margin-right: 10px;
+    text-align: center;
+    cursor: pointer;
+    align-content: center;
+    font-size: 15px;
+    font-family: google sans, sans-serif;
+    box-shadow: 7px 5px 4px rgb(0, 0, 0);
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: rgba(45, 177, 133, 0.4);
+        transform: scale(1.05);
+        transform: translateY(-2px);
+    }
+}
+
+.dialog-title {
+    color: beige;
+    display: flex;
+    font-weight: 600;
+    border-bottom: 2px solid #855218;
+    padding-bottom: 10px;
+}
+
+.note-input {
+    display: flex;
+    resize: none;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    
+    &::placeholder {
+        font-size: 15px;
+        padding-left: 5px;
+    }
+}
+

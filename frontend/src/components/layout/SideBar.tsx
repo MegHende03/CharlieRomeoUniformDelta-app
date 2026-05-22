@@ -1,93 +1,162 @@
 import "./SideBar.css";
 import { useState } from 'react';
-import Modal from 'react-modal';
+import logo from '../../assets/noteLogo.svg';
+import edit from '../../assets/editLogo.svg';
+import erase from '../../assets/deleteLogo.svg';
+import checkmark from '../../assets/checkmark.svg';
+import close from '../../assets/closeLogo.svg';
+import FormDialog from '../dialog/FormDialog'
+import type { Note, Notebook } from '../../pages/HomePage';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function SideBar() {
+interface SidebarProps {
+    selectedListItem: number | null;
+    setSelectedListItem: React.Dispatch<React.SetStateAction<number | null>>;
+    setNote: React.Dispatch<React.SetStateAction<Note[]>>;
+    note: Note[];
+    notebook: Notebook[];
+    setNotebook: React.Dispatch<React.SetStateAction<Notebook[]>>;
+};
 
-    const [notebook, setNotebook] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState<string>('');
-    const [openModal, setOpenModal] = useState(false);
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-    const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
-    if (inputValue.trim()) {
-      // 3. Create a NEW array with the existing items plus the new one
-      setNotebook(prevItems => [...prevItems, inputValue]);
-      setInputValue(''); // Reset input field
-      setOpenModal(false);
+function SideBar({ selectedListItem, setSelectedListItem, setNote, note, notebook, setNotebook} : SidebarProps) {
+
+    const [notebookInputValue, setNotebookInputValue] = useState<string>('');
+    const [isAdding, setIsAdding] = useState(false);
+    const [editingId, setEditingId] = useState<number | null>(null);
+
+    const addNotebook = () => {
+        setEditingId(null);
+        if(!notebookInputValue.trim()) return;
+        const newNotebook = {id: Date.now(), name: notebookInputValue};
+        setNotebook((prev) => [newNotebook, ...prev]);
+        setNotebookInputValue("");
+        setIsAdding(false);
+    };
+
+    const handleNameChangeSubmit = (id: number, newName: string): void => {
+        if(!newName.trim()) {
+            setEditingId(null);
+            setNotebookInputValue("");
+            return;
+        }
+        setNotebook((prevNotebook) =>
+            prevNotebook.map((notebook) =>
+                notebook.id === id ? { ...notebook, name: newName} : notebook )
+        );
+
+        setEditingId(null);
+        setNotebookInputValue("");
+    };
+
+    const handleEdit = (id: number) => {
+        setIsAdding(false);
+        setEditingId(id);
     }
-  };
 
-    function setIsOpen() {
-        setOpenModal(true);
+    const handleDelete = (id: number) => {
+        const updatedNotebook = notebook.filter(notebook => notebook.id != id);
+        setNotebook(updatedNotebook);
+
+        const updatedNote = note.filter(note => note.notebookId != id);
+        setNote(updatedNote);
     }
 
-    function setCloseModal() {
-        setOpenModal(false);
-    }
-    
 
     return (
         <>
             <aside className="side-bar">
-                <h2>Side Bar Header!</h2>
-                <button className="new-note-btn"><span className="plus">+</span>
-                 New note</button>
-                <div className="notebook">
-                    <label>NOTEBOOKS</label>
-                    <button className="plus-btn" onClick={setIsOpen}> + </button>
+                
+                <div className = "logo-title">
+                    <img className="logo-img" src={logo} alt="Logo" />
+                    <h1>notekeeper</h1>
                 </div>
 
-                <Modal isOpen={openModal}
-                    style={{
-                        overlay: {
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(223, 145, 164, 0.75)'
-                        },
-                        content: {
-                            position: 'absolute',
-                            top: '300px',
-                            left: '600px',
-                            right: '600px',
-                            bottom: '300px',
-                            border: '1px solid #070303',
-                            background: '#423232',
-                            overflow: 'auto',
-                            borderRadius: '20px',
-                            outline: 'none',
-                            padding: '20px',
-                            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)'
-
-
-                        }
-                    }}
-                >
-                    <h2>Enter input:</h2>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            placeholder="Add a Notebook..."
-                        />
-                        <button type="submit">Add to list</button>
-                        <button className="close-modal" onClick={setCloseModal}> X </button>
+                <ThemeProvider theme={darkTheme}>
                     
-                    </form>
-                </Modal>
+                <FormDialog selectedListItem={selectedListItem} setNote={setNote} note={note} />
+                
+                </ThemeProvider>
+                
+                <div className="notebook">
+                    <label><h2>NOTEBOOKS</h2></label>
+                    <button className="plus-btn" onClick={() => setIsAdding(true)}> + </button>
+                </div>
 
                 <ul className="notebook-list">
-                    {notebook.map((item, index) => (
-                        <li key={index}>{item}</li>
+
+                    {isAdding && 
+                    <div className="add-notebook">
+                        <input 
+                            autoFocus
+                            maxLength={15}
+                            className="add-notebook-input"
+                            type="text"
+                            placeholder="New Notebook..."
+                            value={notebookInputValue}
+                            onChange={(e) => setNotebookInputValue(e.target.value)}
+                            onKeyDown={(e) => { 
+                                if (e.key === "Enter") {
+                                    addNotebook();
+                                }
+                            }}
+                        />
+                        {!notebookInputValue.trim() ? 
+                        (<button type="submit" onClick={() => setIsAdding(false)} className="checkmark"><img src={close} alt="close" /></button>) : 
+                        (<button type="submit" onClick={addNotebook} className="checkmark"><img src={checkmark} alt="checkmark" /></button>)}
+
+                    </div>
+                }
+
+                    
+                    {notebook.map((notebook) => (
+                        <div key={notebook.id}>
+                                <li onClick={() => 
+                                    setSelectedListItem(notebook.id)}
+                                    className={selectedListItem === notebook.id ? "notebook-item-active" : "notebook-item"}>
+                                    {(editingId === notebook.id && !isAdding) ? (
+                                        <>
+                                            <input
+                                                autoFocus
+                                                key={notebook.id}
+                                                maxLength={15}
+                                                className="add-notebook-input"
+                                                type="text"
+                                                placeholder={`${notebook.name}...`}
+                                                value={notebookInputValue}
+                                                onChange={(e) => setNotebookInputValue(e.target.value)} 
+                                                onKeyDown={(e) => { 
+                                                    if (e.key === "Enter") {
+                                                        handleNameChangeSubmit(notebook.id, notebookInputValue);
+                                                    }
+                                                }}
+                                            />
+                                    
+                                            {!notebookInputValue.trim() ? (<button type="submit" onClick={() => handleNameChangeSubmit(notebook.id, notebookInputValue)} className="checkmark">
+                                                <img src={close} alt="close" /></button>) :
+                                                (<button type="submit" onClick={() => handleNameChangeSubmit(notebook.id, notebookInputValue)} className="checkmark">
+                                                    <img src={checkmark} alt="checkmark" /></button>)
+                                            }
+                                        </>
+                                    ) : (
+                                        <>
+                                            {notebook.name}
+                                            <button className="edit-btn" onClick={() => handleEdit(notebook.id)}><img src={edit} alt="edit button" /></button>
+                                            <button className="delete-btn" onClick={() => handleDelete(notebook.id)}><img src={erase} alt="edit button" /></button>
+                                        </>
+                                    )}   
+                                </li>
+                    
+                        </div>    
                     ))}
+
                 </ul>
+ 
 
             </aside>
             

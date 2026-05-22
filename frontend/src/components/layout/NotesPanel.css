@@ -1,6 +1,7 @@
 .notes-panel {
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid white;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 375px 375px 375px 375px;
+    margin-top: 10px;
+    gap: 15px;
+    position: relative;
 }
