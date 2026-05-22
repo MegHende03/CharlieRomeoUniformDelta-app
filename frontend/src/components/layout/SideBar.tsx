@@ -67,6 +67,10 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
         setNote(updatedNote);
     }
 
+  const handleEdit = (id: number) => {
+    setIsAdding(false);
+    setEditingId(id);
+  };
 
     return (
         <>
@@ -112,6 +116,28 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
 
                     </div>
                 }
+              >
+                {editingId === notebook.id && !isAdding ? (
+                  <>
+                    <input
+                      autoFocus
+                      key={notebook.id}
+                      maxLength={15}
+                      className="add-notebook-input"
+                      type="text"
+                      placeholder={`${notebook.name}...`}
+                      value={notebookInputValue}
+                      onChange={(e) => setNotebookInputValue(e.target.value)}
+                      onKeyDown={(e) => {
+                        console.log(e.key);
+                        if (e.key === "Enter") {
+                          handleNameChangeSubmit(
+                            notebook.id,
+                            notebookInputValue,
+                          );
+                        }
+                      }}
+                    />
 
                     
                     {notebook.map((notebook) => (

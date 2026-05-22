@@ -11,8 +11,20 @@ type HeaderBarProps ={
   selectedListItem: number | null;
 };
 
-
 function HeaderBar( {notebook, selectedListItem} : HeaderBarProps) {
+  
+  const getFormattedDate = () => {
+    const date = new Date();
+
+    const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
+    const month = date.toLocaleDateString("en-US", { month: "short" });
+    const day = date.toLocaleDateString("en-US", { day: "2-digit" });
+    const year = date.getFullYear();
+
+    return `${weekday}, ${month} ${day} ${year}`;
+  };
+
+  const currentDate = getFormattedDate();
 
 const matchingElement = notebook.find(item => item.id === selectedListItem);
 const [buttonPressed, isButtonPressed] = useState(false);
@@ -42,8 +54,8 @@ const [buttonPressed, isButtonPressed] = useState(false);
           </div>
         </div>
         }
-        <p className="welcome-text">Good Morning</p>
-        <p className="date-text">Thu, Oct 05 2023</p>
+        <p className="welcome-text">Good Morning, Name!</p>
+        <p className="date-text">{currentDate}</p>
         <p className="folder-text">{matchingElement?.name}</p>
       </header>
     </>
