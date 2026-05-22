@@ -130,6 +130,7 @@ input {
     padding-bottom: 7px;
     padding-left: 10px;
     padding-right: 10px;
+    cursor: pointer;
 }
 
 .notebook-item-active {
