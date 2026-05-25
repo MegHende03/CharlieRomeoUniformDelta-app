@@ -4,6 +4,7 @@ import type { Notebook } from "../../pages/HomePage";
 import "./HeaderBar.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 type HeaderBarProps = {
   notebook: Notebook[];
@@ -24,6 +25,8 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
 
   const currentDate = getFormattedDate();
 
+  const { authUser, logoutUser } = useAuth();
+
   const matchingElement = notebook.find((item) => item.id === selectedListItem);
   const [buttonPressed, isButtonPressed] = useState(false);
 
@@ -43,9 +46,15 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
     <>
       <header className="header-bar">
         <nav>
-          <Link className="sign-up-btn" to="/signin">
-            Log In
-          </Link>
+          {!authUser ? (
+            <Link className="sign-up-btn" to="/login">
+              Log In
+            </Link>
+          ) : (
+            <button className="sign-up-btn" onClick={logoutUser}>
+              Log Out
+            </button>
+          )}
         </nav>
         <div className="theme-icon">
           <FontAwesomeIcon
@@ -70,7 +79,9 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
             </div>
           </div>
         )}
-        <p className="welcome-text">{getGreeting()}, Name!</p>
+        <p className="welcome-text">
+          {getGreeting()}, {authUser?.fullname ?? ""}!
+        </p>
         <p className="date-text">{currentDate}</p>
         <p className="folder-text">{matchingElement?.name}</p>
       </header>

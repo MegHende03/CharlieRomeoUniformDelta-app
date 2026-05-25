@@ -6,10 +6,11 @@ public class AuthResponse {
     private String fullname;
     private String token;
 
-    public AuthResponse(Long userId, String email, String fullname) {
+    public AuthResponse(Long userId, String email, String fullname, String token) {
         this.userId = userId;
         this.email = email;
         this.fullname = fullname;
+        this.token = token;
     }
 
     public Long getUserId() {
