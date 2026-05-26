@@ -1,9 +1,10 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -11,14 +12,14 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
-import AppTheme from "../LogInPage/shared-theme/AppTheme";
-import ColorModeSelect from "../LogInPage/shared-theme/ColorModeSelect";
-import { GoogleIcon, FacebookIcon } from "./CustomIcons";
+import { styled, useColorScheme } from "@mui/material/styles";
+import ForgotPassword from "./components/ForgotPassword";
+import AppTheme from "./shared-theme/AppTheme";
+import ColorModeSelect from "./shared-theme/ColorModeSelect";
+import { GoogleIcon, FacebookIcon } from "./components/CustomIcons";
 import logo from "../../assets/noteLogo.svg";
-import { signUp } from "../../api/authApi";
+import { logIn } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -29,21 +30,19 @@ const Card = styled(MuiCard)(({ theme }) => ({
   gap: theme.spacing(2),
   margin: "auto",
 
-  backgroundColor: "hsl(0, 11%, 9%)",
+  backgroundColor: "hsl(0, 9%, 15%)",
   border: "1px solid #33cc9966",
 
   color: "white",
 
   boxShadow: "0px 10px 30px rgba(0,0,0,0.5)",
 
-  backdropFilter: "blur(8px)",
-
   [theme.breakpoints.up("sm")]: {
-    width: "450px",
+    maxWidth: "450px",
   },
 }));
 
-const SignUpContainer = styled(Stack)(({ theme }) => ({
+const LogInContainer = styled(Stack)(({ theme }) => ({
   height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
   minHeight: "100%",
   padding: theme.spacing(2),
@@ -66,42 +65,46 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignUp(props: { disableCustomTheme?: boolean }) {
+export default function LogIn(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [nameError, setNameError] = useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [open, setOpen] = useState(false);
 
-  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { loginUser } = useAuth();
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
-      const data = await signUp({
-        fullname,
+      const data = await logIn({
         email,
         password,
       });
 
       loginUser(data);
 
-      console.log("Signup successful:", data);
+      console.log("Login successful:", data);
     } catch (error) {
-      console.error("Signup failed:", error);
+      console.error("Login failed:", error);
     }
   }
 
   const validateInputs = () => {
     const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;
-    const name = document.getElementById("name") as HTMLInputElement;
 
     let isValid = true;
 
@@ -123,15 +126,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       setPasswordErrorMessage("");
     }
 
-    if (!name.value || name.value.length < 1) {
-      setNameError(true);
-      setNameErrorMessage("Name is required.");
-      isValid = false;
-    } else {
-      setNameError(false);
-      setNameErrorMessage("");
-    }
-
     return isValid;
   };
 
@@ -139,7 +133,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     <div className=".mode-dark">
       <AppTheme {...props}>
         <CssBaseline enableColorScheme />
-        <SignUpContainer
+        <LogInContainer
           direction="column"
           sx={{ justifyContent: "space-between" }}
         >
@@ -162,87 +156,42 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               variant="h4"
               sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
             >
-              Sign up
+              Log in
             </Typography>
             <Box
               component="form"
               onSubmit={handleSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              noValidate
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                gap: 2,
+              }}
             >
-              <FormControl>
-                <FormLabel
-                  htmlFor="name"
-                  sx={{
-                    color: "#33cc99",
-
-                    "&.Mui-focused": {
-                      color: "#ce7a1a",
-                    },
-                  }}
-                >
-                  Full name
-                </FormLabel>
-                <TextField
-                  onChange={(e) => setFullname(e.target.value)}
-                  autoComplete="name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  placeholder="Jon Snow"
-                  error={nameError}
-                  helperText={nameErrorMessage}
-                  color={nameError ? "error" : "primary"}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      color: "white",
-
-                      "& fieldset": {
-                        borderColor: "#33cc9966",
-                      },
-
-                      "&:hover fieldset": {
-                        borderColor: "#33cc99",
-                      },
-
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#ce7a1a",
-                        borderWidth: "2px",
-                      },
-                    },
-
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "rgba(255,255,255,0.5)",
-                      opacity: 1,
-                    },
-                  }}
-                />
-              </FormControl>
               <FormControl>
                 <FormLabel
                   htmlFor="email"
                   sx={{
                     color: "#33cc99",
-
-                    "&.Mui-focused": {
-                      color: "#ce7a1a",
-                    },
                   }}
                 >
                   Email
                 </FormLabel>
                 <TextField
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                  fullWidth
-                  id="email"
-                  placeholder="your@email.com"
-                  name="email"
-                  autoComplete="email"
-                  variant="outlined"
                   error={emailError}
                   helperText={emailErrorMessage}
-                  color={passwordError ? "error" : "primary"}
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  autoFocus
+                  required
+                  fullWidth
+                  variant="outlined"
+                  color={emailError ? "error" : "warning"}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       color: "white",
@@ -259,10 +208,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                         borderColor: "#ce7a1a",
                         borderWidth: "2px",
                       },
+
+                      "&.Mui-focused": {
+                        boxShadow: "0 0 8px rgba(206, 122, 26, 0.5)",
+                      },
                     },
 
-                    "& .MuiOutlinedInput-root.Mui-focused": {
-                      boxShadow: "0 0 0 3px rgba(206, 122, 26, 0.35)",
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "rgba(255,255,255,0.5)",
+                      opacity: 1,
                     },
                   }}
                 />
@@ -272,27 +226,24 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   htmlFor="password"
                   sx={{
                     color: "#33cc99",
-
-                    "&.Mui-focused": {
-                      color: "#ce7a1a",
-                    },
                   }}
                 >
                   Password
                 </FormLabel>
                 <TextField
                   onChange={(e) => setPassword(e.target.value)}
-                  required
-                  fullWidth
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
                   name="password"
                   placeholder="••••••"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
+                  autoComplete="current-password"
+                  autoFocus
+                  required
+                  fullWidth
                   variant="outlined"
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  color={passwordError ? "error" : "primary"}
+                  color={passwordError ? "error" : "warning"}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       color: "white",
@@ -309,6 +260,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                         borderColor: "#ce7a1a",
                         borderWidth: "2px",
                       },
+
+                      "&.Mui-focused": {
+                        boxShadow: "0 0 8px rgba(206, 122, 26, 0.5)",
+                      },
                     },
 
                     "& .MuiInputBase-input::placeholder": {
@@ -318,6 +273,11 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   }}
                 />
               </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <ForgotPassword open={open} handleClose={handleClose} />
               <Button
                 type="submit"
                 fullWidth
@@ -325,23 +285,28 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 onClick={validateInputs}
                 sx={{
                   backgroundColor: "#ce7a1a",
-
                   color: "white",
-
                   fontWeight: 600,
                 }}
               >
-                Sign up
+                Log in
               </Button>
+              <Link
+                component="button"
+                type="button"
+                onClick={handleClickOpen}
+                variant="body2"
+                sx={{ alignSelf: "center" }}
+              >
+                Forgot your password?
+              </Link>
             </Box>
-            <Divider>
-              <Typography sx={{ color: "text.secondary" }}>or</Typography>
-            </Divider>
+            <Divider sx={{ color: "rgba(255,255,255,0.5)" }}>or</Divider>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <Button
                 fullWidth
                 variant="outlined"
-                onClick={() => alert("Sign up with Google")}
+                onClick={() => alert("Log in with Google")}
                 startIcon={<GoogleIcon />}
                 sx={{
                   borderColor: "#33cc9966",
@@ -353,12 +318,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   },
                 }}
               >
-                Sign up with Google
+                Log in with Google
               </Button>
               <Button
                 fullWidth
                 variant="outlined"
-                onClick={() => alert("Sign up with Facebook")}
+                onClick={() => alert("Log in with Facebook")}
                 startIcon={<FacebookIcon />}
                 sx={{
                   borderColor: "#33cc9966",
@@ -370,21 +335,21 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   },
                 }}
               >
-                Sign up with Facebook
+                Log in with Facebook
               </Button>
               <Typography sx={{ textAlign: "center" }}>
-                Already have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
-                  href="/login"
+                  href="/signup"
                   variant="body2"
                   sx={{ alignSelf: "center" }}
                 >
-                  Log in
+                  Sign up
                 </Link>
               </Typography>
             </Box>
           </Card>
-        </SignUpContainer>
+        </LogInContainer>
       </AppTheme>
     </div>
   );

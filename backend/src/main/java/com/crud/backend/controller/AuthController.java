@@ -1,6 +1,7 @@
 package com.crud.backend.controller;
 
 import com.crud.backend.dto.auth.AuthResponse;
+import com.crud.backend.dto.auth.LogInRequest;
 import com.crud.backend.dto.auth.SignUpRequest;
 import com.crud.backend.service.AuthService;
 import jakarta.validation.Valid;
@@ -22,5 +23,10 @@ public class AuthController {
     @PostMapping("/signup")
     public AuthResponse signUp(@Valid @RequestBody SignUpRequest request) {
         return authService.signUp(request);
+    }
+
+    @PostMapping("/login")
+    public AuthResponse logIn(@Valid @RequestBody LogInRequest request) {
+        return authService.logIn(request);
     }
 }
