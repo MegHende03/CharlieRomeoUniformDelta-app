@@ -11,10 +11,7 @@ export type Note = {
         notebookId: number | null;
   };
 
-export type Notebook = {
-        id: number;
-        name: string;
-    };
+import type { Notebook } from "../api/notebookAPI"
 
 function HomePage() {
 

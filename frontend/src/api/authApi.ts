@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = "http://localhost:8080/api";
-
+import  axiosClient  from './axiosClient';
 
 export type SignUpRequest = {
   fullname: string;
@@ -23,8 +20,8 @@ export type AuthResponse = {
 
 //http://localhost:8080/api/auth/signup
 export async function signUp(request: SignUpRequest): Promise<AuthResponse> {
-  const response = await axios.post<AuthResponse>(
-    `${API_BASE_URL}/auth/signup`,
+  const response = await axiosClient.post<AuthResponse>(
+    "/auth/signup",
     request
   );
 
@@ -33,8 +30,8 @@ export async function signUp(request: SignUpRequest): Promise<AuthResponse> {
 
 //http://localhost:8080/api/auth/login
 export async function logIn(request: LogInRequest): Promise<AuthResponse> {
-  const response = await axios.post<AuthResponse>(
-    `${API_BASE_URL}/auth/login`,
+  const response = await axiosClient.post<AuthResponse>(
+    "/auth/login",
     request
   );
 
