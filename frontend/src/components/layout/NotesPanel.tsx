@@ -1,7 +1,7 @@
 import NoteCard from "../notes/NoteCard.tsx";
 import "./NotesPanel.css";
 import * as React from 'react';
-import type { Note } from '../../pages/HomePage';
+import type { Note } from '../../api/noteAPI.ts';
 
 type NotesPanelProps = {
   selectedListItem: number | null;

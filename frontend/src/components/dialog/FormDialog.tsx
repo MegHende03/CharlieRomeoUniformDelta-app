@@ -6,7 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import "./FormDialog.css";
-import type { Note } from '../../pages/HomePage';
+import type { Note } from "../../api/noteAPI";
+import { createNote } from "../../api/noteAPI";
 import save from "../../assets/saveLogo.svg"
 import close from "../../assets/closeLogo.svg"
 
@@ -28,33 +29,32 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if(!selectedListItem) return;
-    const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(formData.entries()) as {
-      title: string;
-      content: string;
-    };
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    const title = formJson.title;
-    const content = formJson.content;
+  if (selectedListItem === null) return;
 
-    const newNote = {
-      id: Date.now(),
-      title: title,
-      content: content,
-      notebookId: selectedListItem };
-    
-      setNote((prev) => [...prev, newNote]);
-  
+  const formData = new FormData(event.currentTarget);
 
-      handleClose();
+  const formJson = Object.fromEntries(formData.entries()) as {
+    title: string;
+    content: string;
   };
 
-   React.useEffect(() => {
-        console.log(note);
-      }, [note]);
+  try {
+    const newNote = await createNote(selectedListItem, {
+      title: formJson.title,
+      content: formJson.content,
+    });
+
+    setNote((prev) => [...prev, newNote]);
+
+    handleClose();
+  } catch (error) {
+    console.error("Failed to create note:", error);
+  }
+};
+
 
   return (
     <>

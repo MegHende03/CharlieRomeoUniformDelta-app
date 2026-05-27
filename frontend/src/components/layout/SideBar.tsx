@@ -6,7 +6,7 @@ import erase from '../../assets/deleteLogo.svg';
 import checkmark from '../../assets/checkmark.svg';
 import close from '../../assets/closeLogo.svg';
 import FormDialog from '../dialog/FormDialog'
-import type { Note } from '../../pages/HomePage';
+import type { Note } from '../../api/noteAPI';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { getNotebooks,
