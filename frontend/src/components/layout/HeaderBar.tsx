@@ -83,7 +83,7 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
           {getGreeting()}, {authUser?.fullname ?? ""}!
         </p>
         <p className="date-text">{currentDate}</p>
-        <p className="folder-text">{matchingElement?.name}</p>
+        <p className="notebook-text">{matchingElement?.name}</p>
       </header>
     </>
   );

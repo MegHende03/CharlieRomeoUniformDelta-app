@@ -1,13 +1,20 @@
 import "./SideBar.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../../assets/noteLogo.svg';
 import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
 import checkmark from '../../assets/checkmark.svg';
 import close from '../../assets/closeLogo.svg';
 import FormDialog from '../dialog/FormDialog'
-import type { Note, Notebook } from '../../pages/HomePage';
+import type { Note } from '../../api/noteAPI';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+import { getNotebooks,
+        createNotebook,
+        updateNotebook,
+        deleteNotebook,
+        type Notebook,
+}   from "../../api/notebookAPI";
 
 interface SidebarProps {
     selectedListItem: number | null;
@@ -24,48 +31,98 @@ const darkTheme = createTheme({
   },
 });
 
+
+
 function SideBar({ selectedListItem, setSelectedListItem, setNote, note, notebook, setNotebook} : SidebarProps) {
 
     const [notebookInputValue, setNotebookInputValue] = useState<string>('');
     const [isAdding, setIsAdding] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
 
-    const addNotebook = () => {
-        setEditingId(null);
-        if(!notebookInputValue.trim()) return;
-        const newNotebook = {id: Date.now(), name: notebookInputValue};
-        setNotebook((prev) => [newNotebook, ...prev]);
-        setNotebookInputValue("");
-        setIsAdding(false);
-    };
+    useEffect(() => {
+        async function loadNotebooks() {
+            try {
+                const data = await getNotebooks();
+                setNotebook(data);
+                } catch (error) {
+                console.error("Failed to load notebooks:", error);
+                }
+        }
 
-    const handleNameChangeSubmit = (id: number, newName: string): void => {
-        if(!newName.trim()) {
+        loadNotebooks();
+        }, [setNotebook]);
+
+    const addNotebook = async () => {
+        setEditingId(null);
+
+        if (!notebookInputValue.trim()) return;
+
+        try {
+            const newNotebook = await createNotebook({
+                name: notebookInputValue,
+            });
+
+            setNotebook((prev) => [newNotebook, ...prev]);
+            setNotebookInputValue("");
+            setIsAdding(false);
+        } catch (error) {
+            console.error("Failed to create notebook:", error);
+        }
+        };
+
+    const handleNameChangeSubmit = async (
+        id: number,
+        newName: string
+        ): Promise<void> => {
+        if (!newName.trim()) {
             setEditingId(null);
             setNotebookInputValue("");
             return;
-        }
+    }
+
+    try {
+        const updatedNotebook = await updateNotebook(id, {
+            name: newName,
+        });
+
         setNotebook((prevNotebook) =>
             prevNotebook.map((notebook) =>
-                notebook.id === id ? { ...notebook, name: newName} : notebook )
+                notebook.id === id ? updatedNotebook : notebook
+        )
         );
 
         setEditingId(null);
         setNotebookInputValue("");
+    } catch (error) {
+        console.error("Failed to update notebook:", error);
+    }
     };
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (id: number, currentName: string) => {
         setIsAdding(false);
         setEditingId(id);
-    }
+        setNotebookInputValue(currentName);
+    };
 
-    const handleDelete = (id: number) => {
-        const updatedNotebook = notebook.filter(notebook => notebook.id != id);
-        setNotebook(updatedNotebook);
+    const handleDelete = async (id: number) => {
+    try {
+        await deleteNotebook(id);
 
-        const updatedNote = note.filter(note => note.notebookId != id);
-        setNote(updatedNote);
+        setNotebook((prev) =>
+        prev.filter((notebook) => notebook.id !== id)
+        );
+
+        setNote((prev) =>
+        prev.filter((note) => note.notebookId !== id)
+        );
+
+        if (selectedListItem === id) {
+        setSelectedListItem(null);
+        }
+    } catch (error) {
+        console.error("Failed to delete notebook:", error);
     }
+    };
 
 
     return (
@@ -146,8 +203,11 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
                                     ) : (
                                         <>
                                             {notebook.name}
-                                            <button className="edit-btn" onClick={() => handleEdit(notebook.id)}><img src={edit} alt="edit button" /></button>
-                                            <button className="delete-btn" onClick={() => handleDelete(notebook.id)}><img src={erase} alt="edit button" /></button>
+                                            <button className="edit-btn" onClick={(e) => {e.stopPropagation();
+                                                handleEdit(notebook.id, notebook.name);}}><img src={edit} alt="edit button" /></button>
+                                            <button className="delete-btn" onClick={(e) => {e.stopPropagation();
+                                                handleDelete(notebook.id);
+                                                }}><img src={erase} alt="edit button" /></button>
                                         </>
                                     )}   
                                 </li>

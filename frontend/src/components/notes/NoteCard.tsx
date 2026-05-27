@@ -1,10 +1,11 @@
 import "./NoteCard.css";
-import type { Note } from '../../pages/HomePage';
+import type { Note } from '../../api/noteAPI';
 import edit from '../../assets/editLogo.svg';
 import erase from '../../assets/deleteLogo.svg';
 import close from '../../assets/closeLogo.svg';
 import save from '../../assets/saveLogo.svg';
 import { useState } from 'react';
+import { updateNote, deleteNote } from "../../api/noteAPI";
 
 type NotesCardProps = {
   onClick: () => void;
@@ -22,92 +23,66 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
   const [editingId, setEditingId] = useState<number | null>(null);
   const expanded = expandedNoteId === note.id;
 
+  const getDaysAgo = (updatedAt: string) => {
+  const updatedDate = new Date(updatedAt).getTime();
   const now = Date.now();
-  let daysAgo;
-  
-  if(selectedListItem !== null) {
-    const differenceInMs = now - selectedListItem;
-    daysAgo = Math.floor(
-    differenceInMs / (1000 * 60 * 60 * 24)
-  );}
 
-  const handleNoteChange = (id: number, newTitle: string, newNote: string): void => {
+  const differenceInMs = now - updatedDate;
+  const daysAgo = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+  if (daysAgo === 0) {
+    return "Today...";
+  }
+
+  if (daysAgo === 1) {
+    return "1 day ago...";
+  }
+
+  return `${daysAgo} days ago...`;
+};
+
+  const handleNoteChange = async (id: number, newTitle: string, newContent: string)
+    :Promise<void> => {
+      const finalTitle = newTitle.trim() ? newTitle : note.title;
+      const finalContent = newContent.trim() ? newContent : note.content;
+
+      try {
+       const updatedNote = await updateNote(id, {
+        title: finalTitle,
+        content: finalContent,
+      });
+
+        setNote((prevNotes) =>
+          prevNotes.map((note) =>
+           note.id === id ? updatedNote : note
+        )
+      );
     
-    //if both arent edited
-    if(!newTitle.trim() && !newNote.trim()) {
-      setNote((prevTitle) =>
-        prevTitle.map((note) =>
-            note.id === id ? { ...note} : note )
-      );
-
-      setNote((prevNote) =>
-      prevNote.map((note) =>
-          note.id === id ? { ...note} : note )
-      );
-
       setEditingId(null);
       setEditedTitle("");
       setEditedNote("");
-      return;
+    } catch (error) {
+      console.log("Failed to update note:", error);
     }
 
-
-    //if title is not edited, keep current title, change note
-    if(!newTitle.trim()) {
-      setNote((prevTitle) =>
-        prevTitle.map((note) =>
-            note.id === id ? { ...note} : note )
-      );
-
-      setNote((prevNote) =>
-      prevNote.map((note) =>
-          note.id === id ? { ...note, content: newNote} : note )
-      );
-
-    setEditingId(null);
-    setEditedTitle("");
-    setEditedNote("");
-    return;
-    }
-    
-    //if note isnt edited, keep note, change title
-    if(!newNote.trim()) {
-    setNote((prevTitle) =>
-        prevTitle.map((note) =>
-            note.id === id ? { ...note, title: newTitle} : note )
-    );
-
-    setNote((prevNote) =>
-      prevNote.map((note) =>
-          note.id === id ? { ...note} : note )
-      );
-
-    setEditingId(null);
-    setEditedTitle("");
-    setEditedNote("");
-    return;
-    }
-
-
-    //If both are edited, change both
-    setNote((prevTitle) =>
-        prevTitle.map((note) =>
-            note.id === id ? { ...note, title: newTitle} : note )
-    );
-
-    setNote((prevNote) =>
-    prevNote.map((note) =>
-        note.id === id ? { ...note, content: newNote} : note )
-    );
-
-    setEditingId(null);
-    setEditedTitle("");
-    setEditedNote("");
   };
+    
 
-  const handleDelete = (id: number) => {
-        setNote(prev => prev.filter(prev => prev.id != id));
-    }
+  const handleDelete = async (id: number | null) => {
+  if (id === null) return;
+
+  try {
+    await deleteNote(id);
+
+    setNote((prevNotes) =>
+      prevNotes.filter((note) => note.id !== id)
+    );
+
+    setExpandedNoteId(null);
+  } catch (error) {
+    console.error("Failed to delete note:", error);
+  }
+}
   
   return (
     <>
@@ -117,11 +92,11 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
               <p className="note-card-description">
                 {note.content}
               </p>
-              <p className="note-card-date">Edited {daysAgo} Days ago...</p>
+              <p className="note-card-date">Edited {getDaysAgo(note.updatedAt)}</p>
             </div> 
           }
 
-            {expanded &&
+            {expanded && editingId !== note.id && (
               <div className="note-card-expanded">
                   <button className="note-card-close-btn" onClick={() => setExpandedNoteId(null) }>
                     <img src={close} alt="close"/>
@@ -129,12 +104,17 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                   <p className="note-card-title-expanded">{note.title}</p>
                   <p className="note-card-description-expanded">{note.content}</p>
                   <div className="bottom-content">
-                    <p className="note-card-date-expanded">Edited {daysAgo} Days ago...</p>
-                    <button className="note-card-edit-btn" onClick={() => setEditingId(expandedNoteId)}><img src={edit} alt="edit"/></button>
+                    <p className="note-card-date-expanded">Edited {getDaysAgo(note.updatedAt)}Days ago...</p>
+                    <button className="note-card-edit-btn" onClick={() => {
+                        setEditingId(note.id);
+                        setEditedTitle(note.title);
+                        setEditedNote(note.content);}}>
+                          <img src={edit} alt="edit"/>
+                    </button>
                     <button className="note-card-delete-btn" onClick={() => handleDelete(expandedNoteId)}><img src={erase} alt="delete"/></button>
                   </div>
                 </div>
-            }
+            )}
 
             {(editingId === note.id && expanded) &&
                     <div className="note-card-expanded">
