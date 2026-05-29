@@ -11,6 +11,14 @@ import { createNote } from "../../api/noteAPI";
 import save from "../../assets/saveLogo.svg"
 import close from "../../assets/closeLogo.svg"
 
+//Pop-up MUI dialog modal for entering the title and contents of a new note when "+ New Note" button is clicked. 
+//This form modal takes the selected notebook and associates the desired note with it.
+//If a notebook is not selected, an alert message is desplayed to select one. Notes will not be added without selecting a notebook first.
+
+//Props: 
+// SelectedListItem -> takes currently selected notebook.
+// setNote -> useState array that allows new notes to be added.
+// Note -> Array of Note objects.
 type FormProps = {
   selectedListItem: number | null;
   setNote: React.Dispatch<React.SetStateAction<Note[]>>;
@@ -36,26 +44,31 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
 
   const formData = new FormData(event.currentTarget);
 
+  //Turns entered form dialog into a JSON object.
   const formJson = Object.fromEntries(formData.entries()) as {
     title: string;
     content: string;
   };
 
+  //Calls createNote API + authenticates the user.
+  //Adds Note to the database + expects a response
   try {
     const newNote = await createNote(selectedListItem, {
       title: formJson.title,
       content: formJson.content,
     });
 
+    //Adds the note to the note state array.
     setNote((prev) => [...prev, newNote]);
 
     handleClose();
   } catch (error) {
-    console.error("Failed to create note:", error);
+    console.error("Failed to create note:", error); //if error occurs
   }
 };
 
 
+  //UI
   return (
     <>
       <button className="new-note-btn" onClick={handleClickOpen}><span className="plus">+</span>
@@ -87,7 +100,7 @@ function FormDialog({selectedListItem, setNote, note} : FormProps) {
         >
         <DialogTitle className="dialog-title">New Note:</DialogTitle>
         {!selectedListItem &&
-            <p className='alert'> ⚠︎ Please select a Notebook before making a note!</p>}
+            <p className='alert'> ⚠︎ Please select a Notebook before making a note!</p>} 
         <DialogContent>
         
           <form onSubmit={handleSubmit} id="note-form">

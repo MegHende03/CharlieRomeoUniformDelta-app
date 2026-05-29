@@ -9,6 +9,7 @@ import FormDialog from '../dialog/FormDialog'
 import type { Note } from '../../api/noteAPI';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+//All noteobook CRUD functions.
 import { getNotebooks,
         createNotebook,
         updateNotebook,
@@ -16,6 +17,19 @@ import { getNotebooks,
         type Notebook,
 }   from "../../api/notebookAPI";
 
+//SideBar.tsx displays all UI elements for the side bar. This includes:
+//The app name and logo
+//Creating a new note button
+//Creating a new notebook button
+//All notebooks in a list
+//Buttons to edit or delete a notebook
+
+//All CRUD functions go through authenication to verify the user is who they say they are (in the backend).
+
+//Props:
+//selectedListItem / setSelectedListItem: Sets and store the ID of the currently selected notebook.
+//setNote / note: Sets and stores a new note when the user clicks "+ New note".
+//notebook / setNotebook: Sets, Updates, and stores notebooks created by the user.
 interface SidebarProps {
     selectedListItem: number | null;
     setSelectedListItem: React.Dispatch<React.SetStateAction<number | null>>;
@@ -25,6 +39,7 @@ interface SidebarProps {
     setNotebook: React.Dispatch<React.SetStateAction<Notebook[]>>;
 };
 
+//Specifies any MUI elements as "dark mode"
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -39,6 +54,8 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
     const [isAdding, setIsAdding] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
 
+    //Read CRUD function. Calls API to fetch notebooks from the database and displays them as a list in the side bar.
+    //useEffect -> refereshes the list when a change is made to notebook[] using setNotebook.
     useEffect(() => {
         async function loadNotebooks() {
             try {
@@ -52,6 +69,8 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
         loadNotebooks();
         }, [setNotebook]);
 
+    //Create CRUD function. Calls API to add a new notebook to the database.
+    //User is not allowed to enter an empty string as the name.
     const addNotebook = async () => {
         setEditingId(null);
 
@@ -70,6 +89,8 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
         }
         };
 
+    //Update CRUD function. Calls the backend API to update a notebooks name.
+    //User is not allowed to enter an empty string as the name.
     const handleNameChangeSubmit = async (
         id: number,
         newName: string
@@ -80,6 +101,7 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
             return;
     }
 
+    //wait for a resonse from the backend before continuing 
     try {
         const updatedNotebook = await updateNotebook(id, {
             name: newName,
@@ -104,6 +126,8 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
         setNotebookInputValue(currentName);
     };
 
+    //Delete CRUD function. Calls API + allows the user to delete a notebook.
+    //If a notebook is deleted. Its removed from the database + all associated notes are deleted.
     const handleDelete = async (id: number) => {
         try {
             await deleteNotebook(id);

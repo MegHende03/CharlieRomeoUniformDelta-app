@@ -7,6 +7,17 @@ import save from '../../assets/saveLogo.svg';
 import { useState } from 'react';
 import { updateNote, deleteNote } from "../../api/noteAPI";
 
+//NoteCard.tsx handles update and delete CRUD functions for notes.
+//Provides UI for all notes including mini and expanded view.
+//Mini view: Displays title and shortened version of content.
+//Expanded view: The user is able to see the full contents of their notes with options to edit and delete.
+
+//Props:
+//onClick: Event handler for expanding notes.
+//selectedListItem: Specifies which notebook if currently active.
+//note: A single note for Note[].
+//expandedNoteId: Specifies which note is currently expanded.
+//setNote: Used to update the useState Note[] when a note is updated or deleted.
 type NotesCardProps = {
   onClick: () => void;
   selectedListItem: number | null;
@@ -23,6 +34,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
   const [editingId, setEditingId] = useState<number | null>(null);
   const expanded = expandedNoteId === note.id;
 
+  //Calculates the last time note was edited based on days
   const getDaysAgo = (updatedAt: string) => {
   const updatedDate = new Date(updatedAt).getTime();
   const now = Date.now();
@@ -41,6 +53,8 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
   return `${daysAgo} days ago...`;
 };
 
+  //Handles update CRUD function on notes. Waits for a response from backend before continuing.
+  //Updates note state variable.
   const handleNoteChange = async (id: number, newTitle: string, newContent: string)
     :Promise<void> => {
       const finalTitle = newTitle.trim() ? newTitle : note.title;
@@ -67,7 +81,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
 
   };
     
-
+  //Handles delete CRUD function on notes
   const handleDelete = async (id: number | null) => {
   if (id === null) return;
 

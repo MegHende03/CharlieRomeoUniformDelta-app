@@ -1,3 +1,5 @@
+/* Styling for NotesPanel.tsx. Main purpose is to display notes in a grid */
+
 .notes-panel {
     display: grid;
     grid-template-columns: 375px 375px 375px 375px;
