@@ -105,23 +105,23 @@ function SideBar({ selectedListItem, setSelectedListItem, setNote, note, noteboo
     };
 
     const handleDelete = async (id: number) => {
-    try {
-        await deleteNotebook(id);
+        try {
+            await deleteNotebook(id);
 
-        setNotebook((prev) =>
-        prev.filter((notebook) => notebook.id !== id)
-        );
+            setNotebook((prev) =>
+            prev.filter((notebook) => notebook.id !== id)
+            );
 
-        setNote((prev) =>
-        prev.filter((note) => note.notebookId !== id)
-        );
+            setNote((prev) =>
+            prev.filter((note) => note.notebookId !== id)
+            );
 
-        if (selectedListItem === id) {
-        setSelectedListItem(null);
+            if (selectedListItem === id) {
+            setSelectedListItem(null);
+            }
+        } catch (error) {
+            console.error("Failed to delete notebook:", error);
         }
-    } catch (error) {
-        console.error("Failed to delete notebook:", error);
-    }
     };
 
 

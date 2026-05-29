@@ -5,6 +5,8 @@ import "./HeaderBar.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 type HeaderBarProps = {
   notebook: Notebook[];
@@ -24,6 +26,7 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
   };
 
   const currentDate = getFormattedDate();
+  const navigate = useNavigate();
 
   const { authUser, logoutUser } = useAuth();
 
@@ -34,13 +37,20 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 0 && hour < 12) {
-      return "Good Morning";
+      return "Good Morning,";
     } else if (hour >= 12 && hour < 17) {
-      return "Good Afternoon";
+      return "Good Afternoon,";
     } else {
-      return "Good Evening";
+      return "Good Evening,";
     }
   };
+
+  const handleLogout = () => {
+    logoutUser();
+
+    navigate("/login");
+  }
+
 
   return (
     <>
@@ -51,7 +61,7 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
               Log In
             </Link>
           ) : (
-            <button className="sign-up-btn" onClick={logoutUser}>
+            <button className="sign-up-btn" onClick={() => handleLogout()}>
               Log Out
             </button>
           )}
@@ -80,7 +90,7 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
           </div>
         )}
         <p className="welcome-text">
-          {getGreeting()}, {authUser?.fullname ?? ""}!
+          {getGreeting()} {authUser?.fullname ?? ""}!
         </p>
         <p className="date-text">{currentDate}</p>
         <p className="notebook-text">{matchingElement?.name}</p>

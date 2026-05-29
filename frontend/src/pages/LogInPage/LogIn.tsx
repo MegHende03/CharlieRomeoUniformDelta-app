@@ -12,14 +12,14 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
-import { styled, useColorScheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import ForgotPassword from "./components/ForgotPassword";
 import AppTheme from "./shared-theme/AppTheme";
-import ColorModeSelect from "./shared-theme/ColorModeSelect";
 import { GoogleIcon, FacebookIcon } from "./components/CustomIcons";
 import logo from "../../assets/noteLogo.svg";
 import { logIn } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -71,6 +71,8 @@ export default function LogIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [open, setOpen] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -94,11 +96,14 @@ export default function LogIn(props: { disableCustomTheme?: boolean }) {
         password,
       });
 
+      setLoginError("");
       loginUser(data);
+      navigate("/");
 
       console.log("Login successful:", data);
     } catch (error) {
       console.error("Login failed:", error);
+      setLoginError("Invalid email or password. Please try again.");
     }
   }
 
@@ -273,6 +278,9 @@ export default function LogIn(props: { disableCustomTheme?: boolean }) {
                   }}
                 />
               </FormControl>
+
+              {loginError && <p>{loginError}</p>}
+              
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"

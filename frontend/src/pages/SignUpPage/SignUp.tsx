@@ -16,6 +16,7 @@ import logo from "../../assets/noteLogo.svg";
 import { signUp } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -74,6 +75,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const { loginUser } = useAuth();
 
@@ -88,6 +90,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       });
 
       loginUser(data);
+      navigate("/");
 
       console.log("Signup successful:", data);
     } catch (error) {
@@ -206,6 +209,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                         borderColor: "#ce7a1a",
                         borderWidth: "2px",
                       },
+                      
                     },
 
                     "& .MuiInputBase-input::placeholder": {
@@ -239,6 +243,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   variant="outlined"
                   error={emailError}
                   helperText={emailErrorMessage}
+                  slotProps={{
+                    formHelperText: {
+                      sx: {
+                        color: "#f5f5dc !important",
+                      },
+                    },
+                  }}
                   color={passwordError ? "error" : "primary"}
                   sx={{
                     "& .MuiOutlinedInput-root": {
@@ -289,6 +300,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   variant="outlined"
                   error={passwordError}
                   helperText={passwordErrorMessage}
+                  slotProps={{
+                    formHelperText: {
+                      sx: {
+                        color: "#f5f5dc !important",
+                      },
+                    },
+                  }}
                   color={passwordError ? "error" : "primary"}
                   sx={{
                     "& .MuiOutlinedInput-root": {

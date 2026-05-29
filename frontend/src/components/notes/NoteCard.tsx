@@ -104,7 +104,7 @@ function NoteCard({ onClick, selectedListItem, note, expandedNoteId, setExpanded
                   <p className="note-card-title-expanded">{note.title}</p>
                   <p className="note-card-description-expanded">{note.content}</p>
                   <div className="bottom-content">
-                    <p className="note-card-date-expanded">Edited {getDaysAgo(note.updatedAt)}Days ago...</p>
+                    <p className="note-card-date">Edited {getDaysAgo(note.updatedAt)}</p>
                     <button className="note-card-edit-btn" onClick={() => {
                         setEditingId(note.id);
                         setEditedTitle(note.title);

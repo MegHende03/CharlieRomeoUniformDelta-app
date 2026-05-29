@@ -1,5 +1,7 @@
 import  axiosClient  from './axiosClient';
 
+
+
 export type SignUpRequest = {
   fullname: string;
   email: string;
