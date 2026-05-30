@@ -7,13 +7,24 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+//HeaderBar.tsx contains all the header bar contents for the home page.
 
+//Displays: 
+//Good Morning, Afternoon, or Evening depending on the users local time + their name.
+//The current date (Day, Month, Year).
+//Log Out button -> redirects to log in page.
+
+//Props:
+//notebook: an array of notebook objects
+//selectedListItem: The currently selected notebook
 type HeaderBarProps = {
   notebook: Notebook[];
   selectedListItem: number | null;
 };
 
 function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
+
+  //Displays the current date of the user
   const getFormattedDate = () => {
     const date = new Date();
 
@@ -45,6 +56,7 @@ function HeaderBar({ notebook, selectedListItem }: HeaderBarProps) {
     }
   };
 
+  //If the user logs out -> page is redirected to the log in page.
   const handleLogout = () => {
     logoutUser();
 
