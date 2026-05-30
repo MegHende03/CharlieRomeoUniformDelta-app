@@ -6,6 +6,9 @@ import SignUp from "./pages/SignUpPage/SignUp.tsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 import PublicRoute from "./components/auth/PublicRoute.tsx";
 
+//App.tsx controlls the routing paths.
+//Homepage is encompassed with "ProtectedRoute" -> only users who are logged in an access this page
+//LogIn is encompassed with "PublicRoute" -> stating page, anything can access this page. Once logged in it redirects to home page.
 function App() {
   return (
     <>

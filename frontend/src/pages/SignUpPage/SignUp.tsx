@@ -18,6 +18,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+//Sign up page:
+//When user enters a valid fullname, email, and password -> request sent to database when API endpoint is hit.
+//Password gets hashed and all data gets saved to the database.
+//Backend validates if information already exists. if so -> display error.
+
+
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -72,12 +79,17 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState("");
 
+  //set fullname, email, and password inputs to state variables
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const { loginUser } = useAuth();
+
+  //when API endpoint is hit -> send request.
+  //Wait for a response from the backend before continuing.
+  //Logs user in and sends them to home page.
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -98,6 +110,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     }
   }
 
+  //frontend validation
   const validateInputs = () => {
     const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;

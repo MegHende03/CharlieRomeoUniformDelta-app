@@ -21,6 +21,13 @@ import { logIn } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+//Log In page.
+//Authorizes that the user has valid credentials -> if not, displays error message.
+//When API endpoint is hit, email and password are checked in the database if they exists.
+//JWT hashes the password, the hashed password gets compared to the saved hash password in the database.
+
+
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -87,6 +94,8 @@ export default function LogIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
+  //onSubmit -> wait for a reponse from the backend.
+  //if credentials are correct, set loginUser to response data then redirect user to home page.
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -107,6 +116,7 @@ export default function LogIn(props: { disableCustomTheme?: boolean }) {
     }
   }
 
+  //frontend validation
   const validateInputs = () => {
     const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;

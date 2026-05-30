@@ -2,6 +2,8 @@ package com.crud.backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
     @Entity
     @Table(name = "notebooks")
@@ -21,12 +23,17 @@ import java.time.LocalDateTime;
         @JoinColumn(name = "user_id", nullable = false)
         private User user;
 
+        @OneToMany(mappedBy = "notebook", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<Note> notes = new ArrayList<>();
+
         @PrePersist
         public void onCreate() {
             createdAt = LocalDateTime.now();
             updatedAt = LocalDateTime.now();
 
         }
+
+
 
         @PreUpdate
         public void onUpdate() {
