@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+    //marks class as service layer component.
+    //Service contains the core business logic for notes
+    //Service receives request from Controller. Service communicates with repository.
     @Service
     public class NoteService {
-
+        
         private final NoteRepository noteRepository;
         private final NotebookRepository notebookRepository;
 
