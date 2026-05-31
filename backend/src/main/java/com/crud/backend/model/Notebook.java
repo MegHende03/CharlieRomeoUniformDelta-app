@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+//Notebook table and entities + requirements of a notebook
     @Entity
     @Table(name = "notebooks")
     public class Notebook {

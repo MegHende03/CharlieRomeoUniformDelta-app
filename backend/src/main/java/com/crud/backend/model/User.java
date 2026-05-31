@@ -2,6 +2,8 @@ package com.crud.backend.model;
 
 import jakarta.persistence.*;
 
+//User table and entities
+
 @Entity
 @Table(name = "users")
 public class User {

@@ -3,6 +3,9 @@ package com.crud.backend.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+//Notes table and entities.
+//What is required of a note.
+
     @Entity
     @Table(name = "notes")
     public class Note {
